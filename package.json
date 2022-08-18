@@ -1,6 +1,7 @@
 {
   "name": "client",
   "version": "0.1.0",
+  "homepage": "https://kathulhur.github.io/proyekto-client",
   "private": true,
   "dependencies": {
     "@apollo/client": "^3.6.9",
