@@ -8,6 +8,7 @@ import UsersPage from './pages/UsersPage'
 import UpdateUserPage from './pages/UpdateUserPage'
 import CreateUserPage from './pages/CreateUserPage';
 import LoginPage from './pages/LoginPage';
+import useToken from './useToken';
 
 const cache = new InMemoryCache({
   typePolicies: {
@@ -34,16 +35,31 @@ const client = new ApolloClient({
   cache
 })
 
+
+
 function App() {
+  const { token, setToken } = useToken();
+  console.log('hey');
+  if(!token || (token && Object.keys(token).length === 0)) {
+    return (
+      <>
+        <Header/>
+        <div className="container">
+          <LoginPage setToken={setToken} />
+        </div>
+      </>
+    )
+  }
+
   return (
     <>
       <ApolloProvider client={client}>
         <Router>
-          <Header />
+          <Header setToken={ setToken }/>
           <div className="container">
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/login" element={<LoginPage />} />
+              <Route path="/login" element={<LoginPage setToken={ setToken }/>} />
               <Route path="/users" element={<UsersPage />} />
               <Route path="/users/:id/edit" element={<UpdateUserPage />} />
               <Route path="/users/create" element={<CreateUserPage />} />
