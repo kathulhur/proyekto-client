@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useNavigate } from "react-router-dom";
 
 async function loginUser(credentials) {
-    return fetch('http://localhost:5000/login', {
+    return fetch('https://proyekto-app.herokuapp.com/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
