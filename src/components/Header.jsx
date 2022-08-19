@@ -6,7 +6,7 @@ import useToken from '../useToken'
 export default function Header() {
 
   const { token, setToken } = useToken()
-
+  
   return (
     <nav className='navbar bg-light mb-4 p-0'>
         <div className="container d-flex justify-content-between">
@@ -27,7 +27,12 @@ export default function Header() {
             <div>
               { token && token.token ? 
               (<a href="/" className="" onClick={ () => setToken({}) }>Logout</a> ) : 
-              (<a href="/" className="">Login</a>) 
+              (
+              <>
+                <a href="/login" className="me-5">Login</a>
+                <a href="/signup" className="">Signup</a>
+              </>
+              ) 
               }
               
             </div>

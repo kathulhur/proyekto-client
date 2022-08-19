@@ -4,8 +4,8 @@ export default function CreateUserPage() {
 
   return (
     <>
-      <h3>Create User</h3>
-      <CreateUserForm redirectPath="/users"/>
+      <h3>Signup</h3>
+      <CreateUserForm redirectPath="/login"/>
     </>
   )
 }

@@ -9,6 +9,7 @@ import UpdateUserPage from './pages/UpdateUserPage'
 import CreateUserPage from './pages/CreateUserPage';
 import LoginPage from './pages/LoginPage';
 import useToken from './useToken';
+import SignupPage from './pages/SignupPage';
 
 const cache = new InMemoryCache({
   typePolicies: {
@@ -39,33 +40,36 @@ const client = new ApolloClient({
 
 function App() {
   const { token, setToken } = useToken();
-  console.log('hey');
-  if(!token || (token && Object.keys(token).length === 0)) {
-    return (
-      <>
-        <Header/>
-        <div className="container">
-          <LoginPage setToken={setToken} />
-        </div>
-      </>
-    )
-  }
+
 
   return (
     <>
       <ApolloProvider client={client}>
+        <Header/>
         <Router>
-          <Header setToken={ setToken }/>
           <div className="container">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<LoginPage setToken={ setToken }/>} />
-              <Route path="/users" element={<UsersPage />} />
-              <Route path="/users/:id/edit" element={<UpdateUserPage />} />
-              <Route path="/users/create" element={<CreateUserPage />} />
-              <Route path="/projects/:id" element={<Project />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+            {
+              (!token || (token && Object.keys(token).length === 0)) ?
+              <>
+              
+              <Routes>
+                <Route path="/login" element={<LoginPage setToken={ setToken }/>} />
+                <Route path="/signup" element={<SignupPage />} />
+                <Route path="*" element={<LoginPage setToken={ setToken }/>} />
+              </Routes>
+              </>
+              :
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/login" element={<LoginPage setToken={ setToken }/>} />
+                <Route path="/signup" element={<SignupPage />} />
+                <Route path="/users" element={<UsersPage />} />
+                <Route path="/users/:id/edit" element={<UpdateUserPage />} />
+                <Route path="/users/create" element={<CreateUserPage />} />
+                <Route path="/projects/:id" element={<Project />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            } 
           </div>
         </Router>
       </ApolloProvider>

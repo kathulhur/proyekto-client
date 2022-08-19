@@ -1,5 +1,6 @@
 import { useState } from "react";
 import PropTypes from 'prop-types';
+import { useNavigate } from "react-router-dom";
 
 async function loginUser(credentials) {
     return fetch('http://localhost:5000/login', {
@@ -14,7 +15,7 @@ async function loginUser(credentials) {
 
 
 export default function LoginPage({ setToken }) {
-
+    const navigate = useNavigate();
 
     const [ username, setUsername ] = useState("");
     const [ password, setPassword ] = useState("");
@@ -26,6 +27,7 @@ export default function LoginPage({ setToken }) {
             password
         });
         setToken(token);
+        navigate("/")
     }
 
       
