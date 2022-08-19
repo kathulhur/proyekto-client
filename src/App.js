@@ -4,6 +4,10 @@ import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import Project from './pages/Project';
+import UsersPage from './pages/UsersPage'
+import UpdateUserPage from './pages/UpdateUserPage'
+import CreateUserPage from './pages/CreateUserPage';
+import LoginPage from './pages/LoginPage';
 
 const cache = new InMemoryCache({
   typePolicies: {
@@ -26,7 +30,7 @@ const cache = new InMemoryCache({
 
 
 const client = new ApolloClient({
-  uri: 'https://proyekto-app.herokuapp.com/graphql',
+  uri: 'http://localhost:5000/graphql',
   cache
 })
 
@@ -39,6 +43,10 @@ function App() {
           <div className="container">
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/users" element={<UsersPage />} />
+              <Route path="/users/:id/edit" element={<UpdateUserPage />} />
+              <Route path="/users/create" element={<CreateUserPage />} />
               <Route path="/projects/:id" element={<Project />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
