@@ -1,14 +1,15 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useMutation } from "@apollo/client"
-import { UPDATE_USER } from "../mutations/userMutations"
+import { UPDATE_USER } from "../../mutations/userMutations"
 
-export default function EditProjectForm({ user }) {
+export default function EditUserForm({ user }) {
     const navigate = useNavigate();
 
     const [ username, setUsername ] = useState(user.username)
     const [ password, setPassword ] = useState(user.password)
 
+    console.log(user)
 
     const [updateUser] = useMutation(UPDATE_USER, {
         variables: { id: user.id, username, password },

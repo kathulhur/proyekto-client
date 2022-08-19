@@ -3,9 +3,12 @@ import { Link, useParams } from "react-router-dom"
 import Spinner from "../components/Spinner";
 import { useQuery } from "@apollo/client";
 import { GET_PROJECT } from '../queries/projectQueries';
-import ClientInfo from "../components/ClientInfo";
-import EditProjectForm from "../components/EditProjectForm";
-import DeleteProjectButton from "../components/DeleteProjectButton";
+import ClientInfo from "../components/ClientComponents/ClientInfo";
+import EditProjectForm from "../components/ProjectComponents/EditProjectForm";
+import DeleteProjectButton from "../components/ProjectComponents/DeleteProjectButton";
+import Header from "../components/Header";
+
+
 export default function Project() {
 
   const { id } = useParams();
@@ -19,6 +22,7 @@ export default function Project() {
 
   return (
     <>
+      <Header />
     { !loading && !error && (
       <div className="mx-auto w-75 card p-5">
         <Link to="/" className="btn btn-light btn-sm w-25 d-inline ms-auto">Back</Link>

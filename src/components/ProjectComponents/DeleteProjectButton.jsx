@@ -1,9 +1,8 @@
 import { useNavigate } from "react-router-dom"
 // useNavigate: can be used to navigate to another page
 import { FaTrash } from "react-icons/fa"
-import { GET_PROJECTS } from "../queries/projectQueries"
 import { useMutation } from "@apollo/client"
-import { DELETE_PROJECT } from "../mutations/projectMutations"
+import { DELETE_PROJECT } from "../../mutations/projectMutations"
 
 export default function DeleteProjectButton({ projectId }) {
 

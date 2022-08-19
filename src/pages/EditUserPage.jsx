@@ -1,9 +1,9 @@
-import { Link, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import { useQuery } from "@apollo/client"
-import EditUserForm from "../components/EditUserForm"
+import EditUserForm from "../components/UserComponents/EditUserForm"
 import { GET_USER } from "../queries/userQueries"
 import Spinner from "../components/Spinner"
-
+import Header from "../components/Header";
 
 export default function EditUserPage() {
   const { id } = useParams();
@@ -18,6 +18,7 @@ export default function EditUserPage() {
 
   return (
     <>
+      <Header/>
       <EditUserForm user={ data.user } />
     </>
   )

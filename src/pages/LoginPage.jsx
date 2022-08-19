@@ -1,9 +1,10 @@
 import { useState } from "react";
 import PropTypes from 'prop-types';
 import { useNavigate } from "react-router-dom";
+import Header from "../components/Header";
 
 async function loginUser(credentials) {
-    return fetch('https://proyekto-app.herokuapp.com/login', {
+    return fetch('http://localhost:5000/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -32,6 +33,8 @@ export default function LoginPage({ setToken }) {
 
       
     return (
+        <>
+        <Header/>
         <div className='mt-5'>
             <h3>Login</h3>
             <form onSubmit={ onSubmit }>
@@ -47,6 +50,7 @@ export default function LoginPage({ setToken }) {
             <button type="submit" className="btn btn-primary">Submit</button>
             </form>
         </div>
+        </>
   )
 }
 

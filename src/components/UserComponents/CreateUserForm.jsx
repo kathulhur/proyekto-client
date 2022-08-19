@@ -1,5 +1,5 @@
 import { useMutation } from "@apollo/client"
-import { ADD_USER } from "../mutations/userMutations"
+import { ADD_USER } from "../../mutations/userMutations"
 import { useNavigate } from "react-router-dom"
 import { useState } from "react";
 
@@ -11,6 +11,7 @@ export default function CreateUserForm({ redirectPath }) {
     
     const [addUser] = useMutation(ADD_USER, {
         variables: { username, password },
+        refetchQueries: ["getUsers"],
         onCompleted: () => navigate(redirectPath)
     });
 

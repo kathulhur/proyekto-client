@@ -1,7 +1,7 @@
 import logo from './assets/logo.png'
 import './style.css'
 import useToken from '../useToken'
-
+import { Link } from 'react-router-dom'
 
 export default function Header() {
 
@@ -20,17 +20,19 @@ export default function Header() {
                 </div>
             </a>
             
-              <a href="/" className="me-5">Home</a>
-              <a href="/users">Users</a>
+              <Link to="/" className="me-5">Home</Link>
+              <Link to="/users" className="me-5">Users</Link>
+              <Link to="/clients" className="me-5">Clients</Link>
+              <Link to="/projects">Projects</Link>
             </div>
 
             <div>
               { token && token.token ? 
-              (<a href="/" className="" onClick={ () => setToken({}) }>Logout</a> ) : 
+              (<Link to="/login" className="" onClick={ () => setToken({}) }>Logout</Link> ) : 
               (
               <>
-                <a href="/login" className="me-5">Login</a>
-                <a href="/signup" className="">Signup</a>
+                <Link to="/login" className="me-5">Login</Link>
+                <Link to="/signup" className="">Signup</Link>
               </>
               ) 
               }

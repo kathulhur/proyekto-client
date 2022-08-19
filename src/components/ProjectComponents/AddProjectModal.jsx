@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { FaUser } from 'react-icons/fa';
 import { useMutation } from '@apollo/client';
-import { ADD_PROJECT } from '../mutations/projectMutations';
-import { GET_PROJECTS } from '../queries/projectQueries';
-import ClientSelect from './ClientSelect';
+import { ADD_PROJECT } from '../../mutations/projectMutations';
+import { GET_PROJECTS } from '../../queries/projectQueries';
+import ClientSelect from '../ClientComponents/ClientSelect';
 
 export function AddProjectModal() {
     const [ name, setName ] = useState('');

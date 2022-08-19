@@ -1,8 +1,8 @@
 import { FaTrash } from 'react-icons/fa';
 import { FaPen } from 'react-icons/fa';
 import { useMutation } from '@apollo/client';
-import { GET_USERS } from '../queries/userQueries';
-import { DELETE_USER } from '../mutations/userMutations';
+import { GET_USERS } from '../../queries/userQueries';
+import { DELETE_USER } from '../../mutations/userMutations';
 
 
 export default function UserRow({ user }) {

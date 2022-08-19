@@ -1,14 +1,14 @@
 import { useQuery } from '@apollo/client'
-import ClientRow from './ClientRow'
-import Spinner from './Spinner';
-import { GET_CLIENTS } from '../queries/clientQueries';
+import UserRow from './UserRow'
+import Spinner from '../Spinner';
+import { GET_USERS } from '../../queries/userQueries';
 // gql: used to make the query
 // useQuery: to use the query in our components and get the data as well as the loading state, errors, etc.
 
 
 
-export default function Clients() {
-    const { loading, error, data } = useQuery(GET_CLIENTS);
+export default function Users() {
+    const { loading, error, data } = useQuery(GET_USERS);
     // loading: true or false
     // error: if there is an error
     // data: actual data
@@ -20,15 +20,15 @@ export default function Clients() {
                 <table className="table table-hover mt-3">
                     <thead>
                         <tr>
-                            <td>Name</td>
-                            <td>Email</td>
-                            <td>Phone</td>
+                            <td>ID</td>
+                            <td>Username</td>
+                            <td>Password</td>
                             <td></td>
                         </tr>
                     </thead>
                     <tbody>
-                        { data.clients.map(client => (
-                            <ClientRow key={client.id} client={client} />
+                        { data.users.map(user => (
+                            <UserRow key={user.id} user={user} />
                         ))}
                     </tbody>
                 </table>

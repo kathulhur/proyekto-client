@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client"
-import { GET_CLIENTS } from "../queries/clientQueries"
-import Spinner from "./Spinner"
+import { GET_CLIENTS } from "../../queries/clientQueries"
+import Spinner from "../Spinner"
 
 export default function ClientSelect({ onChange }) {
 

@@ -1,15 +1,19 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Header from './components/Header';
 import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import Project from './pages/Project';
 import UsersPage from './pages/UsersPage'
-import UpdateUserPage from './pages/UpdateUserPage'
+import UpdateUserPage from './pages/EditUserPage'
 import CreateUserPage from './pages/CreateUserPage';
 import LoginPage from './pages/LoginPage';
 import useToken from './useToken';
 import SignupPage from './pages/SignupPage';
+import ClientsPage from './pages/ClientsPage';
+import CreateClientPage from './pages/CreateClientPage';
+import EditClientPage from './pages/EditClientPage';
+import CreateProjectPage from './pages/CreateProjectPage';
+import ProjectsPage from './pages/ProjectsPage';
 
 const cache = new InMemoryCache({
   typePolicies: {
@@ -32,7 +36,7 @@ const cache = new InMemoryCache({
 
 
 const client = new ApolloClient({
-  uri: 'https://proyekto-app.herokuapp.com/graphql',
+  uri: 'http://localhost:5000/graphql',
   cache
 })
 
@@ -45,7 +49,6 @@ function App() {
   return (
     <>
       <ApolloProvider client={client}>
-        <Header/>
         <Router>
           <div className="container">
             {
@@ -64,9 +67,15 @@ function App() {
                 <Route path="/login" element={<LoginPage setToken={ setToken }/>} />
                 <Route path="/signup" element={<SignupPage />} />
                 <Route path="/users" element={<UsersPage />} />
-                <Route path="/users/:id/edit" element={<UpdateUserPage />} />
+                <Route path="/clients" element={<ClientsPage />} />
+                <Route path="/clients/create" element={<CreateClientPage />} />
+                <Route path="/clients/:id/edit" element={<EditClientPage />} />
                 <Route path="/users/create" element={<CreateUserPage />} />
+                <Route path="/users/:id/edit" element={<UpdateUserPage />} />
+                <Route path="/projects" element={<ProjectsPage />} />
+                <Route path="/projects/create" element={<CreateProjectPage />} />
                 <Route path="/projects/:id" element={<Project />} />
+                {/* <Route path="/projects/:id/edit" element={<EditProjectPage />} /> */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
             } 
