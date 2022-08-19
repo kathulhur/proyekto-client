@@ -1,4 +1,4 @@
-import logo from './assets/logo.png'
+import logo from './assets/rocket-icon.svg'
 import './style.css'
 import useToken from '../useToken'
 import { Link } from 'react-router-dom'
@@ -15,7 +15,7 @@ export default function Header() {
                 <div className="d-flex">
                     <div className="d-flex">
                       <img src={logo} alt="logo" className='mr-2'/>
-                      <div>Project Management</div>
+                      <div>PROYEKTO</div>
                     </div>
                 </div>
             </a>
@@ -28,7 +28,7 @@ export default function Header() {
 
             <div>
               { token && token.token ? 
-              (<Link to="/login" className="" onClick={ () => setToken({}) }>Logout</Link> ) : 
+              (<a href="/login" className="" onClick={ () => setToken({}) }>Logout</a> ) : 
               (
               <>
                 <Link to="/login" className="me-5">Login</Link>
