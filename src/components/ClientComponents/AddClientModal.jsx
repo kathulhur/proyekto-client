@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { FaUser } from 'react-icons/fa';
 import { useMutation } from '@apollo/client';
-import { ADD_CLIENT } from '../../mutations/clientMutations';
+import { CREATE_CLIENT } from '../../mutations/clientMutations';
 import { GET_CLIENTS } from '../../queries/clientQueries';
 
 export function AddClientModal() {
@@ -9,27 +9,18 @@ export function AddClientModal() {
     const [ email, setEmail ] = useState('');
     const [ phone, setPhone ] = useState('');
 
-    const [ addClient ] = useMutation(ADD_CLIENT, {
-        variables: { name, email, phone },
-        update(cache, { data: { addClient }}) {
-            const { clients } = cache.readQuery({
-                query: GET_CLIENTS
-            });
+    const [ createClient ] = useMutation(CREATE_CLIENT);
 
-            cache.writeQuery({
-                query: GET_CLIENTS,
-                data: { clients: [...clients, addClient]},
-            });
-        }
-    });
-
-    const onSubmit = (e) => {
+    const onSubmit = async (e) => {
         e.preventDefault();
         if (name === '' || email === '' || phone === '') {
             return alert('Please fill in all fields');
         }
 
-        addClient();
+        await createClient({ 
+            variables: { name, email, phone }, 
+            refetchQueries: [{ query: GET_CLIENTS }] 
+        });
 
         setName('')
         setEmail('')

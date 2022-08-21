@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ADD_CLIENT } from "../mutations/clientMutations";
+import { CREATE_CLIENT } from "../mutations/clientMutations";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import Header from "../components/Header";
@@ -12,7 +12,7 @@ export default function CreateClientPage() {
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
 
-    const [ addClient ] = useMutation(ADD_CLIENT, {
+    const [ addClient ] = useMutation(CREATE_CLIENT, {
         variables: { name, email, phone },
         refetchQueries: ["getClients"], // idk why is this required but not the case in the other mutation (editClient)
         onCompleted: () => navigate('/clients')

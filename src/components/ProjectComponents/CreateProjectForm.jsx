@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useMutation } from '@apollo/client';
-import { ADD_PROJECT } from '../../mutations/projectMutations';
+import { CREATE_PROJECT } from '../../mutations/projectMutations';
 import { GET_PROJECTS } from '../../queries/projectQueries';
 import ClientSelect from '../ClientComponents/ClientSelect';
 import { useNavigate } from 'react-router-dom';
@@ -13,19 +13,23 @@ export default function CreateProjectForm() {
     const [ status, setStatus ] = useState('');
     const [ clientId, setClientId ] = useState('');
 
-    const [ addProject ] = useMutation(ADD_PROJECT, {
-        variables: { name, description, status, clientId},
-        refetchQueries: [{ query: GET_PROJECTS }],
-        onCompleted: () => { navigate('/projects')}
-    });
+    const [ createProject ] = useMutation(CREATE_PROJECT);
 
-    const onSubmit = (e) => {
+    const onSubmit = async (e) => {
         e.preventDefault();
         if (name === '' || description === '' || status === '' || clientId === '') {
             return alert('Please fill in all fields');
         }
 
-        addProject(name, description, status, clientId);
+        console.log(name)
+        console.log(description)
+        console.log(status)
+        console.log(clientId)
+        await createProject({
+            variables: {clientId, name, description, status},
+            refetchQueries: [{ query: GET_PROJECTS }],
+            onCompleted: () => { navigate('/projects')}
+        });
 
         setName('')
         setDescription('')
@@ -51,10 +55,10 @@ export default function CreateProjectForm() {
             </div>
             <div className="mb-3">
                 <label className="form-label">Status</label>
-                <select className="form-select" aria-label="Default select example" defaultValue="In Progress" onChange={ (e) => setStatus(e.target.value)}>
-                    <option value="new">Not Started</option>
-                    <option value="progress">In Progress</option>
-                    <option value="completed">Completed</option>
+                <select className="form-select" aria-label="Default select example" defaultValue="NEW" onChange={ (e) => setStatus(e.target.value)}>
+                    <option value="NEW">Not Started</option>
+                    <option value="PROGRESS">In Progress</option>
+                    <option value="COMPLETED">Completed</option>
                 </select>
             </div>
             <ClientSelect onChange={ (e) => setClientId(e.target.value)}/>

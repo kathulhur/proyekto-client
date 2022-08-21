@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
+import { ApolloProvider, ApolloClient, InMemoryCache, ApolloLink, createHttpLink, concat } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import Project from './pages/Project';
@@ -34,9 +35,24 @@ const cache = new InMemoryCache({
   }
 })
 
+const httpLink = createHttpLink({
+  uri: 'http://localhost:5000/graphql',
+});
+
+const authLink = setContext((_, { headers }) => {
+  // get the authentication token from local storage if it exists
+  const token = sessionStorage.getItem('token');
+  // return the headers to the context so httpLink can read them
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : "",
+    }
+  }
+});
 
 const client = new ApolloClient({
-  uri: 'https://proyekto-app.herokuapp.com/graphql',
+  link: concat(authLink, httpLink),
   cache
 })
 
@@ -52,11 +68,11 @@ function App() {
         <Router>
           <div className="container">
             {
-              (!token || (token && Object.keys(token).length === 0)) ?
+              (!token) ?
               <>
               
               <Routes>
-                <Route path="/login" element={<LoginPage setToken={ setToken }/>} />
+                <Route path="/login" element={<LoginPage token={ token } setToken={ setToken }/>} />
                 <Route path="/signup" element={<SignupPage />} />
                 <Route path="*" element={<LoginPage setToken={ setToken }/>} />
               </Routes>

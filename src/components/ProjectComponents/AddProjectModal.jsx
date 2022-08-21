@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { FaUser } from 'react-icons/fa';
 import { useMutation } from '@apollo/client';
-import { ADD_PROJECT } from '../../mutations/projectMutations';
+import { CREATE_PROJECT } from '../../mutations/projectMutations';
 import { GET_PROJECTS } from '../../queries/projectQueries';
 import ClientSelect from '../ClientComponents/ClientSelect';
 
@@ -11,27 +11,26 @@ export function AddProjectModal() {
     const [ status, setStatus ] = useState('');
     const [ clientId, setClientId ] = useState('');
 
-    const [ addProject ] = useMutation(ADD_PROJECT, {
-        variables: { name, description, status, clientId},
-        update(cache, { data: { addProject }}) {
-            const { projects } = cache.readQuery({
-                query: GET_PROJECTS
-            });
-
-            cache.writeQuery({
-                query: GET_PROJECTS,
-                data: { projects: [...projects, addProject]},
-            });
-        }
-    });
-
-    const onSubmit = (e) => {
+    const [ createProject ] = useMutation(CREATE_PROJECT);
+    const onSubmit = async (e) => {
         e.preventDefault();
         if (name === '' || description === '' || status === '' || clientId === '') {
             return alert('Please fill in all fields');
         }
 
-        addProject(name, description, status, clientId);
+        await createProject({
+            variables: { clientId, name, description, status},
+            update(cache, { data: { createProject }}) {
+                const { projects } = cache.readQuery({
+                    query: GET_PROJECTS
+                });
+    
+                cache.writeQuery({
+                    query: GET_PROJECTS,
+                    data: { projects: [...projects, createProject]},
+                });
+            }
+        });
 
         setName('')
         setDescription('')
@@ -71,10 +70,10 @@ export function AddProjectModal() {
                         </div>
                         <div className="mb-3">
                             <label className="form-label">Status</label>
-                            <select className="form-select" aria-label="Default select example" defaultValue="In Progress" onChange={ (e) => setStatus(e.target.value)}>
-                                <option value="new">Not Started</option>
-                                <option value="progress">In Progress</option>
-                                <option value="completed">Completed</option>
+                            <select className="form-select" aria-label="Default select example" defaultValue="NEW" onChange={ (e) => setStatus(e.target.value)}>
+                                <option value="NEW">Not Started</option>
+                                <option value="PROGRESS">In Progress</option>
+                                <option value="COMPLETED">Completed</option>
                             </select>
                         </div>
                         <ClientSelect onChange={ (e) => setClientId(e.target.value)}/>

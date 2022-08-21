@@ -3,10 +3,14 @@ import './style.css'
 import useToken from '../useToken'
 import { Link } from 'react-router-dom'
 
+
+
 export default function Header() {
 
-  const { token, setToken } = useToken()
+  const { token } = useToken()
   
+
+
   return (
     <nav className='navbar bg-light mb-4 p-0'>
         <div className="container d-flex justify-content-between">
@@ -27,8 +31,8 @@ export default function Header() {
             </div>
 
             <div>
-              { token && token.token ? 
-              (<a href="/login" className="" onClick={ () => setToken({}) }>Logout</a> ) : 
+              { token ? 
+              (<a href="/login" className="" onClick={ () => sessionStorage.clear() }>Logout</a> ) : 
               (
               <>
                 <Link to="/login" className="me-5">Login</Link>

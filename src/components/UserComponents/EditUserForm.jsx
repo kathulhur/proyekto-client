@@ -1,28 +1,27 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useMutation } from "@apollo/client"
-import { UPDATE_USER } from "../../mutations/userMutations"
+import { EDIT_USER } from "../../mutations/userMutations"
 
 export default function EditUserForm({ user }) {
     const navigate = useNavigate();
 
     const [ username, setUsername ] = useState(user.username)
     const [ password, setPassword ] = useState(user.password)
+    const [ twoFactorAuthEnabled, setTwoFactorAuthEnabled ] = useState(user.twoFactorAuthEnabled)
 
-    console.log(user)
-
-    const [updateUser] = useMutation(UPDATE_USER, {
-        variables: { id: user.id, username, password },
-        onCompleted: () => navigate(`/users`)
-    });
+    const [updateUser] = useMutation(EDIT_USER);
 
     const onSubmit = (e) => {
         e.preventDefault();
         if (username === "" || password === "") {
             return alert("Please fill in all fields");
         }
-
-        updateUser(username, password);
+        console.log( user.id, username, password, twoFactorAuthEnabled);
+        updateUser({
+            variables: { id: user.id, username, password,  twoFactorAuthEnabled},
+            onCompleted: () => navigate(`/users`)
+        });
     }
 
     return (
@@ -36,6 +35,12 @@ export default function EditUserForm({ user }) {
             <div className="mb-3">
                 <label className="form-label">Description</label>
                 <input type="password" className="form-control" id="password" value={password} onChange={ (e) => setPassword(e.target.value)}/>
+            </div>
+            <div className="form-check">
+                <input className="form-check-input" type="checkbox" checked={ twoFactorAuthEnabled } onChange={ (e) => setTwoFactorAuthEnabled(!twoFactorAuthEnabled)} id="is-two-factor-auth-enabled"/>
+                <label className="form-check-label" htmlFor="is-two-factor-auth-enabled">
+                    Enable Two Factor Authentication
+                </label>
             </div>
 
             <button type="submit" className="btn btn-primary">Submit</button>

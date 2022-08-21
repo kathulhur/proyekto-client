@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useMutation } from "@apollo/client";
-import { UPDATE_CLIENT } from "../../mutations/clientMutations";
+import { EDIT_CLIENT } from "../../mutations/clientMutations";
 import { useNavigate } from "react-router-dom";
 
 export default function EditClientForm({ client }) {
@@ -10,7 +10,7 @@ export default function EditClientForm({ client }) {
     const [email, setEmail] = useState(client.email);
     const [phone, setPhone] = useState(client.phone);
     
-    const [ updateClient ] = useMutation(UPDATE_CLIENT, {
+    const [ updateClient ] = useMutation(EDIT_CLIENT, {
         variables: { id: client.id, name, email, phone },
         onCompleted: () => navigate('/clients')
     });

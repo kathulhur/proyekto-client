@@ -10,13 +10,14 @@ const DELETE_PROJECT = gql`
 `;
 
 
-const ADD_PROJECT = gql`
-    mutation addProject($name: String!, $description: String!, $status: ProjectStatus!, $clientId: ID!) {
-        addProject(name: $name, description: $description, status: $status, clientId: $clientId){
+const CREATE_PROJECT = gql`
+    mutation createProject($clientId: ID!, $name: String!, $description: String!, $status: Status!) {
+        createProject(clientId: $clientId, name: $name, description: $description, status: $status){
             id
             name
             description
             status
+            clientId
             client {
                 id
                 name
@@ -28,9 +29,9 @@ const ADD_PROJECT = gql`
 `;
 
 
-const UPDATE_PROJECT = gql`
-    mutation updateProject($id: ID!, $name: String!, $description: String!, $status: ProjectStatusUpdate!) {
-        updateProject(id: $id, name: $name, description: $description, status: $status){
+const EDIT_PROJECT = gql`
+    mutation editProject($id: ID!, $clientId: ID, $name: String, $description: String, $status: Status) {
+        editProject(id: $id, clientId: $clientId, name: $name, description: $description, status: $status){
             id
             name
             description
@@ -40,8 +41,9 @@ const UPDATE_PROJECT = gql`
                 name
                 email
                 phone
-            }
+            }   
         }
     }
 `;
-export { ADD_PROJECT, DELETE_PROJECT, UPDATE_PROJECT };
+
+export { CREATE_PROJECT, DELETE_PROJECT, EDIT_PROJECT };

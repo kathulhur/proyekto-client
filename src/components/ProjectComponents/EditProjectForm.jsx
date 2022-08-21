@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useMutation } from "@apollo/client"
-import { UPDATE_PROJECT } from "../../mutations/projectMutations"
+import { EDIT_PROJECT } from "../../mutations/projectMutations"
 import { GET_PROJECT } from "../../queries/projectQueries"
 
 export default function EditProjectForm({ project }) {
@@ -9,18 +9,18 @@ export default function EditProjectForm({ project }) {
     const [status, setStatus] = useState("");
 
 
-    const [updateProject] = useMutation(UPDATE_PROJECT, {
-        variables: { id: project.id, name, description, status },
-        refetchQueries: [{ query: GET_PROJECT, variables: { id: project.id } }],
-    });
+    const [ editProject ] = useMutation(EDIT_PROJECT);
 
-    const onSubmit = (e) => {
+    const onSubmit = async (e) => {
         e.preventDefault();
         if (name === "" || description === "" || status === "") {
             return alert("Please fill in all fields");
         }
-
-        updateProject(name, description, status);
+        console.log(project.id)
+        await editProject({
+            variables: { id: project.id, name, description, status },
+            refetchQueries: [{ query: GET_PROJECT, variables: { id: project.id } }]
+        });
     }
 
     return (
@@ -37,10 +37,10 @@ export default function EditProjectForm({ project }) {
             </div>
             <div className="mb-3">
                 <label className="form-label">Status</label>
-                <select className="form-select" aria-label="Default select example" defaultValue="new" onChange={ (e) => setStatus(e.target.value)}>
-                    <option value="new">Not Started</option>
-                    <option value="progress">In Progress</option>
-                    <option value="completed">Completed</option>
+                <select className="form-select" aria-label="Default select example" defaultValue="NEW" onChange={ (e) => setStatus(e.target.value)}>
+                    <option value="NEW">Not Started</option>
+                    <option value="PROGRESS">In Progress</option>
+                    <option value="COMPLETED">Completed</option>
                 </select>
             </div>
 

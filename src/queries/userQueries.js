@@ -17,6 +17,8 @@ const GET_USER = gql`
         id
         username
         password
+        secretCode
+        twoFactorAuthEnabled
     }
   }
 `;
