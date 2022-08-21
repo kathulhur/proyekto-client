@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { ApolloProvider, ApolloClient, InMemoryCache, ApolloLink, createHttpLink, concat } from '@apollo/client';
+import { ApolloProvider, ApolloClient, InMemoryCache, createHttpLink, concat } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';

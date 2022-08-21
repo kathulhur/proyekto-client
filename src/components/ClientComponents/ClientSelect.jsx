@@ -7,17 +7,20 @@ export default function ClientSelect({ onChange }) {
     const { loading, error, data } = useQuery(GET_CLIENTS)
     if (loading) return <Spinner/>
     if (error) return <p>Something Went Wrong</p>
-
+    console.log(data.clients[0].id)
     return (
-        <div className="mb-3">
+        <>
+        { !loading && !error && (
+            <div className="mb-3">
             <label className="form-label">Client</label>
-            <select className="form-select" aria-label="Default select example" defaultValue="" onChange={onChange}>
-            { !loading && !error && 
-                    data.clients.map(client => (
-                    <option key={client.id} value={client.id}>{client.name}</option>
-                ))}
+            <select className="form-select" aria-label="Default select example" defaultValue={data.clients[0].id} onChange={onChange}>
+                    {data.clients.map(client => (
+                        <option key={client.id} value={client.id}>{client.name}</option>
+                        ))}
             
             </select>
         </div>
-    )
+        )
+    }
+    </>)
 }

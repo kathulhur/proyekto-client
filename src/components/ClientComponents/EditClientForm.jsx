@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useMutation } from "@apollo/client";
 import { EDIT_CLIENT } from "../../mutations/clientMutations";
 import { useNavigate } from "react-router-dom";
+import { GET_CLIENTS } from "../../queries/clientQueries";
 
 export default function EditClientForm({ client }) {
     const navigate = useNavigate();
@@ -10,10 +11,7 @@ export default function EditClientForm({ client }) {
     const [email, setEmail] = useState(client.email);
     const [phone, setPhone] = useState(client.phone);
     
-    const [ updateClient ] = useMutation(EDIT_CLIENT, {
-        variables: { id: client.id, name, email, phone },
-        onCompleted: () => navigate('/clients')
-    });
+    const [ updateClient ] = useMutation(EDIT_CLIENT);
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -22,7 +20,11 @@ export default function EditClientForm({ client }) {
             return alert("Please fill in all fields");
         }
 
-        updateClient(client.id, name, email, phone);
+        updateClient({
+            variables: { id: client.id, name, email, phone },
+            refetchQueries: [{ query: GET_CLIENTS }],
+            onCompleted: () => navigate('/clients')
+        });
     }
 
 

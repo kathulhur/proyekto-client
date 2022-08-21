@@ -26,9 +26,9 @@ export default function Clients() {
     )
     return (
         <>
-            { !loading && !error && (
+            <Link to='/clients/create' className='btn btn-primary mb-3'>Add Client</Link>
+            { !loading && !error && data.clients.length > 0 ? (
                 <div className="container">
-                    <Link to='/clients/create' className='btn btn-primary mb-3'>Add Client</Link>
                     <table className="table table-hover mt-3">
                         <thead>
                             <tr>
@@ -45,7 +45,7 @@ export default function Clients() {
                         </tbody>
                     </table>
                 </div>
-            )}
+            ) : (<p>No clients yet</p>)}
         </>
     )
 }

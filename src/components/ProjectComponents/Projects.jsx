@@ -19,15 +19,15 @@ export default function Projects() {
 
     return (
         <>
+        <Link to='/projects/create' className='btn btn-primary mb-3'>Create Project</Link>
             { data.projects.length > 0 ? (
-                <>
-                    <Link to='/projects/create' className='btn btn-primary mb-3'>Create Project</Link>
-                    <div className="row mt-4">
-                        { data.projects.map( (project) => (
-                            <ProjectCard key={project.id} project={project} />
-                        ))}
-                    </div>
-                </>
+            <>
+                <div className="row mt-4">
+                    { data.projects.map( (project) => (
+                        <ProjectCard key={project.id} project={project} />
+                    ))}
+                </div>
+            </>
             ) : (<p>No projects yet</p>)}
         </>
     )

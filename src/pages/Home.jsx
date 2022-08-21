@@ -6,15 +6,15 @@ import Projects from '../components/ProjectComponents/Projects';
 import Header from "../components/Header";
 export default function Home() {
   return (
-    <>
+    <div className="container">
       <Header />
+      <h1>Your Cool Projects</h1>
+      <hr/>
       {/* <div className="d-flex gap-3 mb-4">
           <AddClientModal/>
           <AddProjectModal/>
       </div> */}
       <Projects/>
-      <hr />
-      <Clients/>
-    </>
+    </div>
   )
 }
