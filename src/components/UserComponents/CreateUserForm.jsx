@@ -2,6 +2,7 @@ import { useMutation } from "@apollo/client"
 import { SIGN_UP } from "../../mutations/userMutations"
 import { useNavigate } from "react-router-dom"
 import { useState } from "react";
+import { GET_USERS } from "../../queries/userQueries";
 
 async function getSecretCode() {
     const options = {
@@ -38,8 +39,9 @@ export default function CreateUserForm({ redirectPath }) {
 
         secretCode = await getSecretCode();
         console.log(secretCode);
-        createUser({
+        await createUser({
             variables: { username, password, secretCode},
+            refetchQueries: [{ query: GET_USERS }],
             onCompleted: () => { navigate(redirectPath) }
         });
     }

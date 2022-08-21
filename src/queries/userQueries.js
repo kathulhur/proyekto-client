@@ -23,7 +23,11 @@ const GET_USER = gql`
   }
 `;
 
+const GET_GOOGLE_AUTH_API_KEY = gql`
+  query getGoogleAuthApiKey{
+    googleAuthApiKey
+  }
+`;
 
 
-
-export { GET_USER, GET_USERS };
+export { GET_USER, GET_USERS, GET_GOOGLE_AUTH_API_KEY };

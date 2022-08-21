@@ -8,10 +8,10 @@ export default function Home() {
   return (
     <>
       <Header />
-      <div className="d-flex gap-3 mb-4">
+      {/* <div className="d-flex gap-3 mb-4">
           <AddClientModal/>
           <AddProjectModal/>
-      </div>
+      </div> */}
       <Projects/>
       <hr />
       <Clients/>

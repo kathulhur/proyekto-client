@@ -67,17 +67,6 @@ function App() {
       <ApolloProvider client={client}>
         <Router>
           <div className="container">
-            {
-              (!token) ?
-              <>
-              
-              <Routes>
-                <Route path="/login" element={<LoginPage token={ token } setToken={ setToken }/>} />
-                <Route path="/signup" element={<SignupPage />} />
-                <Route path="*" element={<LoginPage setToken={ setToken }/>} />
-              </Routes>
-              </>
-              :
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<LoginPage setToken={ setToken }/>} />
@@ -91,10 +80,8 @@ function App() {
                 <Route path="/projects" element={<ProjectsPage />} />
                 <Route path="/projects/create" element={<CreateProjectPage />} />
                 <Route path="/projects/:id" element={<Project />} />
-                {/* <Route path="/projects/:id/edit" element={<EditProjectPage />} /> */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
-            } 
           </div>
         </Router>
       </ApolloProvider>
