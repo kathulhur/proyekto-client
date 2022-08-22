@@ -3,6 +3,7 @@ import { CREATE_CLIENT } from "../mutations/clientMutations";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import Header from "../components/Header";
+import { GET_CLIENTS } from "../queries/clientQueries";
 
 export default function CreateClientPage() {
     
@@ -12,20 +13,20 @@ export default function CreateClientPage() {
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
 
-    const [ addClient ] = useMutation(CREATE_CLIENT, {
-        variables: { name, email, phone },
-        refetchQueries: ["getClients"], // idk why is this required but not the case in the other mutation (editClient)
-        onCompleted: () => navigate('/clients')
-    });
+    const [ addClient ] = useMutation(CREATE_CLIENT);
 
-    const onSubmit = (e) => {
+    const onSubmit = async (e) => {
         e.preventDefault();
 
         if (name === "" || email === "" || phone === "") {
             return alert("Please fill in all fields");
         }
 
-        addClient(name, email, phone);
+        await addClient({
+            variables: { name, email, phone },
+            refetchQueries: [{ query: GET_CLIENTS}],
+            onCompleted: () => navigate('/clients')
+        });
     }
 
 
