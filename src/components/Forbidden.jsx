@@ -6,7 +6,7 @@ export default function Forbidden() {
     <>
     <div className="d-flex flex-column justify-content-center align-items-center mt-5">
         <AiOutlineStop className="text-danger" size='5em' />
-        <h1>404</h1>
+        <h1>403</h1>
         <p className="Lead">Sorry, you don't have the permission to access this page.</p>
         <Link to="/login" className="btn btn-primary">
             login
