@@ -4,44 +4,22 @@ import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import { useMutation } from "@apollo/client";
 import { SIGN_IN } from "../mutations/userMutations"; // import the mutation
-import { GET_GOOGLE_AUTH_API_KEY } from "../queries/userQueries";
 import { useQuery } from "@apollo/client";
 import Spinner from "../components/Spinner";
+import { validateTwoFactorAuth } from '../utils/authUtil';
+import { GET_GOOGLE_AUTH_API_KEY } from "../queries/userQueries";
 
-async function validate(code, secret, apiKey) {
-    const encodedParams = new URLSearchParams();
-    encodedParams.append("secret", secret);
-    encodedParams.append("code", code);
-    
-    const options = {
-        method: 'POST',
-        headers: {
-            'content-type': 'application/x-www-form-urlencoded',
-            'X-RapidAPI-Key': `${apiKey}`,
-            'X-RapidAPI-Host': 'google-authenticator.p.rapidapi.com'
-        },
-        body: encodedParams
-    };
 
-    return fetch(`https://google-authenticator.p.rapidapi.com/validate/?code=${ code }&secret=${ secret }`, options)
-        .then(response => response.text())
-        .catch(err => console.error(err));
-}
 
 export default function LoginPage({ token, setToken }) {
     const navigate = useNavigate();
-    const { loading, error, data } = useQuery(GET_GOOGLE_AUTH_API_KEY);
-
     
-    const [ signIn ] = useMutation(SIGN_IN);
+    const [ signIn, { loading: signInLoading, error: signInError }] = useMutation(SIGN_IN);
+    const { data: getGoogleAuthApiKey } = useQuery(GET_GOOGLE_AUTH_API_KEY);
     const [ username, setUsername ] = useState("");
     const [ password, setPassword ] = useState("");
     const [ code, setCode ] = useState("");
     const [ payload , setPayload ] = useState(null);
-    
-    
-    if (loading) return <Spinner/>
-    if (error) return <p>Problem fetching google auth api</p>
 
     const onSubmit = async e => {
         e.preventDefault();
@@ -72,7 +50,8 @@ export default function LoginPage({ token, setToken }) {
                     break;
 
                 case true: // if two factor authentication is enabled
-                    const isValid = await validate(code, payload.user.secretCode, data.googleAuthApiKey);
+                    const googleAuthApiKey = getGoogleAuthApiKey.googleAuthApiKey;
+                    const isValid = await validateTwoFactorAuth(googleAuthApiKey, code, payload.user.secretCode);
                     if (isValid === "True") {
                         setToken(payload.token);
                         navigate("/");
@@ -93,7 +72,7 @@ export default function LoginPage({ token, setToken }) {
         <div className='mt-5'>
             <h3>Login</h3>
             <form onSubmit={ onSubmit }>
-            { error && <div className="alert alert-danger">{ error.message }</div> }
+            { signInError && <div className="alert alert-danger">{ signInError.message }</div> }
             <div className="mb-3">
                 <label className="form-label">Username</label>
                 <input type="text" className="form-control" id="username" onChange={ (e) => setUsername(e.target.value)}/>

@@ -13,12 +13,14 @@ const DELETE_USER = gql`
 
 
 const EDIT_USER = gql`
-    mutation editUser($id: ID!, $username: String, $password: String, $twoFactorAuthEnabled: Boolean) {
-        editUser(id: $id, username: $username, password: $password, twoFactorAuthEnabled: $twoFactorAuthEnabled) {
+    mutation editUser($id: ID!, $username: String, $password: String, $twoFactorAuthEnabled: Boolean, $role: Role, $secretCode: String) {
+        editUser(id: $id, username: $username, password: $password, twoFactorAuthEnabled: $twoFactorAuthEnabled, role: $role, secretCode: $secretCode) {
             id
             username
             password
             twoFactorAuthEnabled
+            role
+            secretCode
         }
     }
 `;
@@ -26,12 +28,16 @@ const EDIT_USER = gql`
 
 
 const CREATE_USER = gql`
-    mutation createUser($username: String!, $password: String!, $secretCode: String!) {
-        createUser(username: $username, password: $password, secretCode: $secretCode){
+    mutation createUser($username: String!, $password: String!, $secretCode: String!, $twoFactorAuthQrLink: String!) {
+        createUser(username: $username, password: $password, secretCode: $secretCode, twoFactorAuthQrLink: $twoFactorAuthQrLink) {
             id
             username
             password
-            secretCode
+            secretCode,
+            role
+            twoFactorAuthEnabled
+            twoFactorAuthQrLink
+
         }
     }
 `;
@@ -50,16 +56,5 @@ const SIGN_IN = gql`
 `;
 
 
-const SIGN_UP = gql`
-    mutation signUp($username: String!, $password: String!, $secretCode: String!) {
-        signUp(username: $username, password: $password, secretCode: $secretCode){
-            token
-            user {
-                secretCode
-            }
-        }
-    }
-`;
 
-
-export { DELETE_USER, EDIT_USER , CREATE_USER, SIGN_IN, SIGN_UP };
+export { DELETE_USER, EDIT_USER , CREATE_USER, SIGN_IN };

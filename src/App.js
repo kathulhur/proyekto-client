@@ -15,6 +15,7 @@ import CreateClientPage from './pages/CreateClientPage';
 import EditClientPage from './pages/EditClientPage';
 import CreateProjectPage from './pages/CreateProjectPage';
 import ProjectsPage from './pages/ProjectsPage';
+import UserPage from './pages/UserPage'
 
 const cache = new InMemoryCache({
   typePolicies: {
@@ -36,7 +37,7 @@ const cache = new InMemoryCache({
 })
 
 const httpLink = createHttpLink({
-  uri: 'https://proyekto-app.herokuapp.com/graphql?',
+  uri: 'https://proyekto-app.herokuapp.com/graphql',
 });
 
 const authLink = setContext((_, { headers }) => {
@@ -76,6 +77,7 @@ function App() {
                 <Route path="/clients/create" element={<CreateClientPage />} />
                 <Route path="/clients/:id/edit" element={<EditClientPage />} />
                 <Route path="/users/create" element={<CreateUserPage />} />
+                <Route path="/users/:id" element={<UserPage />} />
                 <Route path="/users/:id/edit" element={<UpdateUserPage />} />
                 <Route path="/projects" element={<ProjectsPage />} />
                 <Route path="/projects/create" element={<CreateProjectPage />} />

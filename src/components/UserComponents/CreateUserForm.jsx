@@ -1,22 +1,12 @@
 import { useMutation } from "@apollo/client"
-import { SIGN_UP } from "../../mutations/userMutations"
+import { CREATE_USER } from "../../mutations/userMutations"
 import { useNavigate } from "react-router-dom"
 import { useState } from "react";
 import { GET_USERS } from "../../queries/userQueries";
+import { getSecretCode, getTwoFactorAuthQrLink } from "../../utils/authUtil";
+import { useQuery } from "@apollo/client";
+import { GET_GOOGLE_AUTH_API_KEY, GET_APP_NAME } from "../../queries/userQueries";
 
-async function getSecretCode() {
-    const options = {
-        method: 'POST',
-        headers: {
-            'X-RapidAPI-Key': '482774802cmsh9f7a363a2d2f393p14409cjsn0bbd5071a76b',
-            'X-RapidAPI-Host': 'google-authenticator.p.rapidapi.com'
-        }
-    };
-    
-    return fetch('https://google-authenticator.p.rapidapi.com/new_v2/', options)
-        .then(response => response.text())
-        .catch(err => console.error(err));
-}
 
 
 export default function CreateUserForm({ redirectPath }) {
@@ -24,12 +14,13 @@ export default function CreateUserForm({ redirectPath }) {
 
     const [ username, setUsername ] = useState("")
     const [ password, setPassword ] = useState("")
-    let secretCode = "";
-    const [createUser, { loading, error }] = useMutation(SIGN_UP);
+    const { data: getGoogleAuthApiKey } = useQuery(GET_GOOGLE_AUTH_API_KEY);
+    const { data: getAppName } = useQuery(GET_APP_NAME);
+
+    const [createUser, { loading, error }] = useMutation(CREATE_USER);
 
     if (loading) return 'Submitting...';
-    if (error) return `Submission error! ${error.message}`;
-
+    if (error) return `Error! ${error.message}`;
 
     const onSubmit = async (e) => {
         e.preventDefault();
@@ -37,10 +28,16 @@ export default function CreateUserForm({ redirectPath }) {
             return alert("Please fill in all fields");
         }
 
-        secretCode = await getSecretCode();
-        console.log(secretCode);
+        const googleAuthApiKey = getGoogleAuthApiKey.googleAuthApiKey
+        const appName = getAppName.appName
+
+        const secretCode = await getSecretCode(googleAuthApiKey);
+
+        const twoFactorAuthQrLink = await getTwoFactorAuthQrLink({googleAuthApiKey, appName, username, secretCode});
+
+        console.log(username, password, secretCode, twoFactorAuthQrLink)
         await createUser({
-            variables: { username, password, secretCode},
+            variables: { username, password, secretCode, twoFactorAuthQrLink },
             refetchQueries: [{ query: GET_USERS }],
             onCompleted: () => { navigate(redirectPath) }
         });
@@ -52,6 +49,7 @@ export default function CreateUserForm({ redirectPath }) {
         <>
         <div className='mt-5'>
             <form onSubmit={ onSubmit }>
+            { error && <div className="alert alert-danger">{ error.message }</div> }
             <div className="mb-3">
                 <label className="form-label">Username</label>
                 <input type="text" className="form-control" id="username" value={username} onChange={ (e) => setUsername(e.target.value)}/>

@@ -32,8 +32,11 @@ export default function Header() {
 
             <div>
               { token ? 
-              (<a href="/login" className="" onClick={ () => sessionStorage.clear() }>Logout</a> ) : 
               (
+                <>
+                  <a href="/login" className="" onClick={ () => sessionStorage.clear() }>Logout</a>
+                </>
+              ) : (
               <>
                 <Link to="/login" className="me-5">Login</Link>
                 <Link to="/signup" className="">Signup</Link>

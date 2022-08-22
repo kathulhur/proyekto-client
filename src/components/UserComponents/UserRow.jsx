@@ -9,14 +9,14 @@ export default function UserRow({ user }) {
 
     const [ deleteUser ] = useMutation(DELETE_USER, {
         variables: { id: user.id },
-
-        update(cache, { data: { deleteUser }}) {
-            const { users } = cache.readQuery({ query: GET_USERS });
-            cache.writeQuery({
-                query: GET_USERS,
-                data: { users: users.filter(user => user.id !== deleteUser.id)},
-            });
-        }
+        refetchQueries: [{ query: GET_USERS }]
+        // update(cache, { data: { deleteUser }}) { // this produces a warning
+        //     const { users } = cache.readQuery({ query: GET_USERS });
+        //     cache.writeQuery({
+        //         query: GET_USERS,
+        //         data: { users: users.filter(user => user.id !== deleteUser.id)},
+        //     }); 
+        // }
     });
 
     return (
