@@ -3,23 +3,22 @@ import PropTypes from 'prop-types';
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import { useMutation } from "@apollo/client";
-import { SIGN_IN } from "../mutations/userMutations"; // import the mutation
-import { useQuery } from "@apollo/client";
-import Spinner from "../components/Spinner";
-import { validateTwoFactorAuth } from '../utils/authUtil';
-import { GET_GOOGLE_AUTH_API_KEY } from "../queries/userQueries";
+import { SIGN_IN, VALIDATE_CODE } from "../mutations/userMutations"; // import the mutation
 
 
 
 export default function LoginPage({ token, setToken }) {
     const navigate = useNavigate();
     
-    const [ signIn, { loading: signInLoading, error: signInError }] = useMutation(SIGN_IN);
-    const { data: getGoogleAuthApiKey } = useQuery(GET_GOOGLE_AUTH_API_KEY);
     const [ username, setUsername ] = useState("");
     const [ password, setPassword ] = useState("");
     const [ code, setCode ] = useState("");
     const [ payload , setPayload ] = useState(null);
+    
+    const [ validateCode, { error: validateCodeError } ] = useMutation(VALIDATE_CODE);
+    const [ signIn, { error: signInError }] = useMutation(SIGN_IN, {
+        variables: { username, password }
+    });
 
     const onSubmit = async e => {
         e.preventDefault();
@@ -40,9 +39,8 @@ export default function LoginPage({ token, setToken }) {
                 setPayload(data.signIn);
             }
         }
-            
+        
         if (payload) {
-
             switch (payload.user.twoFactorAuthEnabled) {
                 case false:// if two factor authentication is disabled
                     setToken(payload.token);
@@ -50,8 +48,7 @@ export default function LoginPage({ token, setToken }) {
                     break;
 
                 case true: // if two factor authentication is enabled
-                    const googleAuthApiKey = getGoogleAuthApiKey.googleAuthApiKey;
-                    const isValid = await validateTwoFactorAuth(googleAuthApiKey, code, payload.user.secretCode);
+                    const isValid = await validateCode({ variables: {userId: payload.user.id, code}});
                     if (isValid === "True") {
                         setToken(payload.token);
                         navigate("/");
@@ -73,6 +70,7 @@ export default function LoginPage({ token, setToken }) {
             <h3>Login</h3>
             <form onSubmit={ onSubmit }>
             { signInError && <div className="alert alert-danger">{ signInError.message }</div> }
+            { validateCodeError && <div className="alert alert-danger">{ validateCodeError.message }</div> }
             <div className="mb-3">
                 <label className="form-label">Username</label>
                 <input type="text" className="form-control" id="username" onChange={ (e) => setUsername(e.target.value)}/>

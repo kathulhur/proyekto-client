@@ -37,7 +37,7 @@ const cache = new InMemoryCache({
 })
 
 const httpLink = createHttpLink({
-  uri: 'https://proyekto-app.herokuapp.com/graphql',
+  uri: 'http://localhost:4000/graphql',
 });
 
 const authLink = setContext((_, { headers }) => {

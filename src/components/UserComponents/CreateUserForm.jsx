@@ -3,9 +3,6 @@ import { CREATE_USER } from "../../mutations/userMutations"
 import { useNavigate } from "react-router-dom"
 import { useState } from "react";
 import { GET_USERS } from "../../queries/userQueries";
-import { getSecretCode, getTwoFactorAuthQrLink } from "../../utils/authUtil";
-import { useQuery } from "@apollo/client";
-import { GET_GOOGLE_AUTH_API_KEY, GET_APP_NAME } from "../../queries/userQueries";
 
 
 
@@ -14,10 +11,12 @@ export default function CreateUserForm({ redirectPath }) {
 
     const [ username, setUsername ] = useState("")
     const [ password, setPassword ] = useState("")
-    const { data: getGoogleAuthApiKey } = useQuery(GET_GOOGLE_AUTH_API_KEY);
-    const { data: getAppName } = useQuery(GET_APP_NAME);
 
-    const [createUser, { loading, error }] = useMutation(CREATE_USER);
+    const [createUser, { loading, error }] = useMutation(CREATE_USER, {
+        variables: { username, password },
+        refetchQueries: [{ query: GET_USERS }],
+        onCompleted: () => { navigate(redirectPath) }
+    });
 
     if (loading) return 'Submitting...';
     if (error) return `Error! ${error.message}`;
@@ -28,19 +27,7 @@ export default function CreateUserForm({ redirectPath }) {
             return alert("Please fill in all fields");
         }
 
-        const googleAuthApiKey = getGoogleAuthApiKey.googleAuthApiKey
-        const appName = getAppName.appName
-
-        const secretCode = await getSecretCode(googleAuthApiKey);
-
-        const twoFactorAuthQrLink = await getTwoFactorAuthQrLink({googleAuthApiKey, appName, username, secretCode});
-
-        console.log(username, password, secretCode, twoFactorAuthQrLink)
-        await createUser({
-            variables: { username, password, secretCode, twoFactorAuthQrLink },
-            refetchQueries: [{ query: GET_USERS }],
-            onCompleted: () => { navigate(redirectPath) }
-        });
+        await createUser();
     }
 
 

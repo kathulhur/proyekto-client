@@ -28,12 +28,12 @@ const EDIT_USER = gql`
 
 
 const CREATE_USER = gql`
-    mutation createUser($username: String!, $password: String!, $secretCode: String!, $twoFactorAuthQrLink: String!) {
-        createUser(username: $username, password: $password, secretCode: $secretCode, twoFactorAuthQrLink: $twoFactorAuthQrLink) {
+    mutation createUser($username: String!, $password: String!) {
+        createUser(username: $username, password: $password) {
             id
             username
             password
-            secretCode,
+            secretCode
             role
             twoFactorAuthEnabled
             twoFactorAuthQrLink
@@ -48,13 +48,23 @@ const SIGN_IN = gql`
         signIn(username: $username, password: $password){
             token
             user {
+                id
                 twoFactorAuthEnabled
-                secretCode
             }
+        }
+    }
+`;
+
+const VALIDATE_CODE = gql`
+    mutation validateCode($userId: ID!, $code: String!) {
+        validateCode(userId: $userId, code: $code ) {
+            code
+            success
+            message
         }
     }
 `;
 
 
 
-export { DELETE_USER, EDIT_USER , CREATE_USER, SIGN_IN };
+export { DELETE_USER, EDIT_USER , CREATE_USER, SIGN_IN, VALIDATE_CODE};
