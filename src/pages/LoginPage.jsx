@@ -48,8 +48,9 @@ export default function LoginPage({ token, setToken }) {
                     break;
 
                 case true: // if two factor authentication is enabled
-                    const isValid = await validateCode({ variables: {userId: payload.user.id, code}});
-                    if (isValid === "True") {
+                    const { data: {validateCode: validateCodeData}} = await validateCode({ variables: {userId: payload.user.id, code}});
+
+                    if (validateCodeData.success) {
                         setToken(payload.token);
                         navigate("/");
                     }
