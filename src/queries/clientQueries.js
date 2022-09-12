@@ -1,16 +1,7 @@
 import { gql } from '@apollo/client';
 
 // the same syntax as with the graphiql
-const GET_CLIENTS = gql` 
-    query getClients {
-        clients {
-            id
-            name
-            email
-            phone
-        }
-    }
-`;
+
 
 const GET_CLIENT = gql`
     query getClient($id: ID!) {
@@ -24,4 +15,4 @@ const GET_CLIENT = gql`
 `;
 
 
-export { GET_CLIENTS, GET_CLIENT };
+export { GET_CLIENT };

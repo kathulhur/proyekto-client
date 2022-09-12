@@ -1,9 +1,8 @@
 import { gql } from '@apollo/client'
 
-
-const GET_PROJECT = gql`
-    query getProject($id: ID!) {
-        project(id: $id) {
+export default gql`
+    mutation ProjectsCreateOneMutation($clientId: ID!, $name: String!, $description: String!, $status: Status!) {
+        createProject(clientId: $clientId, name: $name, description: $description, status: $status){
             id
             name
             description
@@ -15,11 +14,6 @@ const GET_PROJECT = gql`
                 email
                 phone
             }
-        } 
+        }
     }
 `;
-
-
-
-
-export { GET_PROJECT };

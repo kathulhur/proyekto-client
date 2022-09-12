@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client'
 
 
-const GET_PROJECT = gql`
-    query getProject($id: ID!) {
+export default gql`
+    query ProjectsUpdateOneQuery($id: ID!) {
         project(id: $id) {
             id
             name
@@ -15,11 +15,12 @@ const GET_PROJECT = gql`
                 email
                 phone
             }
-        } 
+        }
+        clients {
+            id
+            name
+            email
+            phone
+        }
     }
 `;
-
-
-
-
-export { GET_PROJECT };
