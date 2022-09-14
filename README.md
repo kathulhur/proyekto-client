@@ -1,70 +1,91 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
 
-In the project directory, you can run:
+<div id="top"></div>
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+<!-- PROJECT SHIELDS -->
+<!--
+*** I'm using markdown "reference style" links for readability.
+*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
+*** See the bottom of this document for the declaration of the reference variables
+*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
+*** https://www.markdownguide.org/basic-syntax/#reference-style-links
+-->
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![MIT License][license-shield]][license-url]
+[![LinkedIn][linkedin-shield]][linkedin-url]
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+# proyekto-client
+![proyekto screenshot](https://user-images.githubusercontent.com/61414067/188045724-cac607cb-f81a-458f-84ef-69e1e2c616e8.png)
 
-### `npm test`
+### Built With
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+* [expressjs](https://expressjs.com/)
+* [ApolloClient = React](https://www.apollographql.com/docs/react/)
+* [Mongodb](https://www.mongodb.com/)
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Description
+This is the client side implementation of PROYEKTO, a project management app. This is built using express, and Apollo Client.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### You can visit the website by clicking on this link [Proyekto](https://proyekto.kathulhudev.me)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+<!-- ROADMAP -->
+## Roadmap
+- [X] User Info Page
+- [X] Two Factor Authentication
+- [ ] Nextjs Migration
+- [ ] Typescript Migration
+- [ ] Add phases object to project
 
-## Learn More
+See the [open issues](https://github.com/kathulhur/proyekto-client/issues) for a full list of proposed features (and known issues).
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Stay in touch
 
-### Analyzing the Bundle Size
+- Author - [Joseph](https://github.com/kathulhur)
+- Website - [https://kathulhur.github.io/portfolio/](https://kathulhur.github.io/portfolio/)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+<!-- LICENSE -->
+## License
 
-### Making a Progressive Web App
+Distributed under the MIT License. See `LICENSE.txt` for more information.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-### Advanced Configuration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+<!-- CONTACT -->
+## Contact
 
-### Deployment
+Joseph - josephkarl19@gmail.com
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Project Link: [https://github.com/kathulhur/proyekto-client](https://github.com/kathulhur/proyekto-client)
 
-### `npm run build` fails to minify
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+[contributors-shield]: https://img.shields.io/github/contributors/kathulhur/proyekto-client.svg?style=for-the-badge
+[contributors-url]: https://github.com/kathulhur/proyekto-client/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/kathulhur/proyekto-client.svg?style=for-the-badge
+[forks-url]: https://github.com/kathulhur/proyekto-client/network/members
+[stars-shield]: https://img.shields.io/github/stars/kathulhur/proyekto-client.svg?style=for-the-badge
+[stars-url]: https://github.com/kathulhur/proyekto-client/stargazers
+[issues-shield]: https://img.shields.io/github/issues/kathulhur/proyekto-client.svg?style=for-the-badge
+[issues-url]: https://github.com/kathulhur/url-shortener/issues
+[license-shield]: https://img.shields.io/github/license/kathulhur/proyekto-client.svg?style=for-the-badge
+[license-url]: https://github.com/kathulhur/proyekto-client/blob/master/LICENSE.txt
+[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
+[linkedin-url]: https://linkedin.com/in/joseph-karl-crisostomo-aa009021b
+[product-screenshot]: images/screenshot.png
