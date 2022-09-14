@@ -5,9 +5,10 @@ import mutation from "./mutation"
 import { useQuery } from "@apollo/client"
 import { useRouter } from "next/router"
 
-export default function EditProjectForm() {
+export default function UpdateProjectForm() {
     const router = useRouter();
     const projectId = router.query?.projectId;
+
     const [name, setName] = useState('')
     const [description, setDescription] = useState('')
     const [status, setStatus] = useState('');
@@ -26,9 +27,9 @@ export default function EditProjectForm() {
     const [ editProject ] = useMutation(mutation, {
         variables: {
             id: projectId,
-            name: name,
-            description: description,
-            status: status
+            name,
+            description,
+            status
         },
     });
 

@@ -4,6 +4,7 @@ import Header from "../../../src/components/Header";
 import { useQuery, gql } from "@apollo/client";
 import { useRouter } from 'next/router'
 import { FaCode, FaLock, FaShieldAlt, FaUserCircle, FaUsers } from 'react-icons/fa';
+import DeleteUserModal from '../../../src/components/users/Delete';
 
 const query = gql`
     query UserPageQuery($id: ID!) {
@@ -18,6 +19,7 @@ const query = gql`
         }
     }
 `
+
 export default function User() {
     const router = useRouter()
     const userId = router.query?.userId
@@ -67,10 +69,13 @@ export default function User() {
                 <li className="list-group-item">
                     <FaShieldAlt className='icon'/> <b>TwoFactorAuthentication QRCode Link:</b> <a href={data.user?.twoFactorAuthQrLink}>Click Here</a>
                 </li>
-                <Link href={`/users/${data.user?.id}/update`}>
-                    <a className="btn btn-primary btn-sm mt-3">Edit</a>
-                </Link>
             </ul>
+            <div className='d-flex justify-content-end mt-3'>
+                <Link href={`/users/${data.user?.id}/update`}>
+                    <a className="btn btn-primary me-3">Update</a>
+                </Link>
+                <DeleteUserModal/>
+            </div>
         </div>
         )}
     </>

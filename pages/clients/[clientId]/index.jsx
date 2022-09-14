@@ -1,10 +1,12 @@
-import { FaEnvelope, FaPhone, FaIdBadge } from 'react-icons/fa';
-import { useQuery, gql } from '@apollo/client';
-import { useRouter } from 'next/router';
-import Forbidden from '../../../src/components/Forbidden';
-import Spinner from '../../../src/components/Spinner';
-import Header from '../../../src/components/Header';
-import Link from 'next/link';
+import { FaEnvelope, FaPhone, FaIdBadge } from 'react-icons/fa'
+import { useQuery, useMutation, gql } from '@apollo/client'
+import { useRouter } from 'next/router'
+import Forbidden from '../../../src/components/Forbidden'
+import Spinner from '../../../src/components/Spinner'
+import Header from '../../../src/components/Header'
+import Link from 'next/link'
+import DeleteClientModal from '../../../src/components/clients/Delete'
+
 
 const query = gql`
     query ClientPageQuery($id: ID!) {
@@ -15,11 +17,14 @@ const query = gql`
             phone
         }
     }
-`;  
+`;
+
+
 
 export default function ClientPage() {
     const router = useRouter();
     const clientId = router.query?.clientId;
+
 
     const { data, loading, error } = useQuery(query, {
         skip: !clientId,
@@ -27,14 +32,12 @@ export default function ClientPage() {
             id: clientId
         }
     });
-
+    
     if (loading) return <Spinner />;
     if (error) return (
         <>
-            { error.graphQLErrors[0]?.extensions.code === "FORBIDDEN" ? 
-                <Forbidden/> : // if the error code is forbidden
-            <p>Something Went Wrong</p>
-            }
+            {console.log(error)}
+            <p>Something went wrong</p>
         </>
     )
     
@@ -55,9 +58,12 @@ export default function ClientPage() {
                         <FaPhone className='icon'/> {data?.client?.phone}
                     </li>
                 </ul>
-                <Link href={`/clients/${clientId}/update`}>
-                    <a className='btn btn-primary mt-3'>Update Client</a>
-                </Link>
+                <div className='d-flex align-items-center justify-content-end mt-3'>
+                    <Link href={`/clients/${clientId}/update`}>
+                        <a className='btn btn-primary me-3'>Update</a>
+                    </Link>
+                    <DeleteClientModal />
+                </div>
             </>
             )}
         </>

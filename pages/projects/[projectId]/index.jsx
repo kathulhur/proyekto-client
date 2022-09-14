@@ -1,10 +1,10 @@
-import React from 'react'
 import { gql, useQuery } from '@apollo/client'
 import { useRouter } from 'next/router'
 import Header from '../../../src/components/Header'
 import Spinner from '../../../src/components/Spinner'
-import UpdateProject from '../../../src/components/projects/Update'
+import DeleteProjectModal from '../../../src/components/projects/Delete'
 import Link from 'next/link'
+
 
 const query = gql`
     query Project($id: ID!) {
@@ -33,8 +33,8 @@ function ProjectPage() {
     if (loading) return <Spinner />;
     if (error) return (
         <>
-        {console.log(error)}
-        <p>Something went wrong</p>
+            {console.log(error)}
+            <p>Something went wrong</p>
         </>
     )
 
@@ -56,11 +56,12 @@ function ProjectPage() {
 
                 <h5 className="mt-3">Project Status</h5>
                 <p className="lead">{ data.project.status }</p>
-        
-                <Link href={`/projects/${data.project.id}/update`}>
-                    <a className="btn btn-primary">Update Project</a>
-                </Link>
-                
+                <div className='d-flex justify-content-end'>
+                    <Link href={`/projects/${data.project.id}/update`}>
+                        <a className='btn btn-primary me-2'>Update</a>
+                    </Link>
+                    <DeleteProjectModal/>
+                </div>
               </div>
             )}
         </>

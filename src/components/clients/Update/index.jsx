@@ -24,7 +24,6 @@ export default function UpdateClientForm() {
     
     const [ updateClient ] = useMutation(mutation, {
         variables: { id: clientId, name, email, phone },
-        onCompleted: () => router.push(`/clients/${clientId}`)
     });
 
     const onSubmit = async (e) => {
@@ -36,7 +35,7 @@ export default function UpdateClientForm() {
 
         try {
             await updateClient()
-
+            router.push(`/clients/${clientId}`)
         } catch (err) {
             console.log('UpdateClientForm');
             console.log(err);
