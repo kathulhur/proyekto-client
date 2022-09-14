@@ -57,7 +57,7 @@ export default function ClientsTable() {
                         </tbody>
                     </table>
                 </div>
-            ) : (<p>No clients yet</p>)}
+            ) : (<div className='d-flex justify-content-center mt-5'><p>No clients yet</p></div>)}
         </>
     )
 }

@@ -21,7 +21,7 @@ export default function UsersTable() {
         <>
             { data.users?.length > 0 ? (
                 <>
-                <Link href="create">
+                <Link href="/users/create">
                     <a className='btn btn-primary mb-3'>
                         Create User
                     </a>
@@ -55,7 +55,9 @@ export default function UsersTable() {
                 </table>
                 </>
             ) : (
-                <p className="text-center">No users found</p>
+                <div className='d-flex justify-content-center mt-5'>
+                    <p>No projects yet</p>
+                </div>
             )}
         </>
     )

@@ -43,7 +43,7 @@ export default function CreateClientForm() {
                 <input type="text" className="form-control" id="phone" value={phone} onChange={ (e) => setPhone(e.target.value)}/>
             </div>
 
-            <button type="submit" data-bs-dismiss="modal" className="btn btn-secondary">Submit</button>
+            <button type="submit" className="btn btn-secondary">Submit</button>
         </form>
 )
 }

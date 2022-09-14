@@ -1,5 +1,5 @@
-import CreateProjectForm from "../components/ProjectComponents/CreateProjectForm";
-import Header from "../components/Header";
+import CreateProjectForm from '../../src/components/projects/Create'
+import Header from '../../src/components/Header'
 
 export default function CreateProjectPage() {
 

@@ -2,6 +2,9 @@ import { useRouter } from 'next/router'
 import { useMutation } from "@apollo/client";
 import mutation from "./mutation";
 import query from "./query";
+import { useState } from 'react'
+import { useQuery } from '@apollo/client'
+import Spinner from '../../Spinner'
 
 
 export default function CreateProjectForm() {
@@ -13,7 +16,7 @@ export default function CreateProjectForm() {
     const [ clientId, setClientId ] = useState('');
 
     const { loading, error, data } = useQuery(query, {
-        onCompleted: () => {
+        onCompleted: (data) => {
             setClientId(data.clients[0].id)
         }
     })
@@ -35,11 +38,7 @@ export default function CreateProjectForm() {
             return alert('Please fill in all fields');
         }
         try {
-            await createProject({
-                variables: {clientId, name, description, status},
-                refetchQueries: [{ query: GET_PROJECTS }],
-                onCompleted: () => { navigate('/projects')}
-            });
+            await createProject();
 
         } catch(err) {
             console.log('CreateProjectForm');

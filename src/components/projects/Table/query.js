@@ -7,7 +7,10 @@ export default gql`
             name
             description
             status
-            clientId
+            client {
+                id
+                name
+            }
         }
     }
 `

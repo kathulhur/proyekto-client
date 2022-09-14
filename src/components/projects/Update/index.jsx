@@ -2,13 +2,19 @@ import { useState } from "react"
 import { useMutation } from "@apollo/client"
 import query from "./query"
 import mutation from "./mutation"
+import { useQuery } from "@apollo/client"
+import { useRouter } from "next/router"
 
 export default function EditProjectForm() {
-    const [name, setName] = useState(project.name)
-    const [description, setDescription] = useState(project.description)
-    const [status, setStatus] = useState(project.status);
+    const router = useRouter();
+    const projectId = router.query?.projectId;
+    const [name, setName] = useState('')
+    const [description, setDescription] = useState('')
+    const [status, setStatus] = useState('');
 
     const { loading, error, data } = useQuery(query, {
+            skip: !projectId,
+            variables: { id: projectId },
             onCompleted: (data) => {
                 setName(data.project.name)
                 setDescription(data.project.description)
@@ -17,15 +23,27 @@ export default function EditProjectForm() {
         }
     )
 
-    const [ editProject ] = useMutation(mutation);
+    const [ editProject ] = useMutation(mutation, {
+        variables: {
+            id: projectId,
+            name: name,
+            description: description,
+            status: status
+        },
+    });
 
     const onSubmit = async (e) => {
         e.preventDefault();
         if (name === "" || description === "" || status === "") {
             return alert("Please fill in all fields");
         }
-
-        await editProject();
+        try {
+            await editProject();
+            router.push(`/projects/${projectId}`);
+        } catch (err) {
+            console.log('UpdateProjectForm Component')
+            console.log(err);
+        }
     }
 
     return (
@@ -42,7 +60,7 @@ export default function EditProjectForm() {
             </div>
             <div className="mb-3">
                 <label className="form-label">Status</label>
-                <select className="form-select" aria-label="Default select example" defaultValue={status} onChange={ (e) => setStatus(e.target.value)}>
+                <select className="form-select" aria-label="Default select example" value={status} onChange={ (e) => setStatus(e.target.value)}>
                     <option value="NEW">Not Started</option>
                     <option value="PROGRESS">In Progress</option>
                     <option value="COMPLETED">Completed</option>

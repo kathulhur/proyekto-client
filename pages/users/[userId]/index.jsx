@@ -20,9 +20,10 @@ const query = gql`
 `
 export default function User() {
     const router = useRouter()
-    const { userId } = router.query
+    const userId = router.query?.userId
 
     const { loading, error, data } = useQuery(query, {
+        skip: !userId,
         variables: {
             id: userId
         }

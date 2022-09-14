@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import query from "./query";
 import mutation from "./mutation";
 
-export default function EditClientForm() {
+export default function UpdateClientForm() {
     const router = useRouter();
 	const clientId = router?.query?.clientId;
 
@@ -12,19 +12,19 @@ export default function EditClientForm() {
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
 
-
     const { data, loading, error } = useQuery(query, {
+        skip: !clientId,
         variables: { id: clientId },
         onCompleted: (data) => {
-            setName(data.getClient?.name);
-            setEmail(data.getClient?.email);
-            setPhone(data.getClient?.phone);
+            setName(data.client?.name);
+            setEmail(data.client?.email);
+            setPhone(data.client?.phone);
         }
     });
     
-    const [ editClient ] = useMutation(mutation, {
+    const [ updateClient ] = useMutation(mutation, {
         variables: { id: clientId, name, email, phone },
-        onCompleted: () => { router.push(`/clients/${clientId}`) }
+        onCompleted: () => router.push(`/clients/${clientId}`)
     });
 
     const onSubmit = async (e) => {
@@ -35,9 +35,10 @@ export default function EditClientForm() {
         }
 
         try {
-            await editClient()
+            await updateClient()
+
         } catch (err) {
-            console.log('EditClientForm');
+            console.log('UpdateClientForm');
             console.log(err);
         }
     }

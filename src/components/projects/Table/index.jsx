@@ -17,7 +17,9 @@ export default function Projects() {
     )
     return (
         <>
-        <Link href='/projects/create' className='btn btn-primary mb-3'>Create Project</Link>
+        <Link href='/projects/create'>
+            <a className='btn btn-primary mb-3'>Create Project</a>
+        </Link>
             { data.projects?.length > 0 ? (
             <>
                 <div className="row mt-4">
@@ -39,7 +41,7 @@ export default function Projects() {
                     ))}
                 </div>
             </>
-            ) : (<p>No projects yet</p>)}
+            ) : (<div className='d-flex justify-content-center mt-5'><p>No projects yet</p></div>)}
         </>
     )
 }
