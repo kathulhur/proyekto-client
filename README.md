@@ -25,7 +25,7 @@
 ### Built With
 
 * [expressjs](https://expressjs.com/)
-* [ApolloClient = React](https://www.apollographql.com/docs/react/)
+* [ApolloClient - React](https://www.apollographql.com/docs/react/)
 * [Mongodb](https://www.mongodb.com/)
 
 
