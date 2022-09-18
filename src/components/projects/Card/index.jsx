@@ -3,6 +3,10 @@ import query from './query'
 import Spinner from '../../Spinner';
 import Forbidden from '../../Forbidden';
 import { useQuery } from "@apollo/client";
+import Card from 'react-bootstrap/Card';
+import { Col, Container, Row } from 'react-bootstrap';
+
+
 export default function Projects() {
     const { loading, error, data } = useQuery(query);
 
@@ -22,24 +26,23 @@ export default function Projects() {
         </Link>
             { data.projects?.length > 0 ? (
             <>
-                <div className="row mt-4">
+                <Container className='mt-3 p-0' fluid>
+                    <Row xs={{cols: 2}} xl={{cols: 3}} >
                     { data.projects.map( (project) => (
-                        <div key={project.id} className='col-md-4'>
-                            <div className="card mb-3">
-                                <div className="card-body">
-                                    <div className="d-flex justify-content-between align-items-center">
-                                        <h5 className="card-title">{project.name}</h5>
-                    
-                                        <a className='btn btn-light' href={`/projects/${project.id}`}>View</a>
-                                    </div>
-                                    <p className="small">
-                                        Status: <strong>{project.status}</strong>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
+                        <Col key={project.id} className='mb-4'>
+                            <Card key={project.id}>
+                                <Card.Body>
+                                    <Card.Title>{project.name}</Card.Title>
+                                    <Card.Text>{project.description}</Card.Text>
+                                    <Link href={`/projects/${project.id}`}>
+                                        <a className='btn btn-primary'>View Project</a>
+                                    </Link>
+                                </Card.Body>
+                            </Card>
+                        </Col>
                     ))}
-                </div>
+                    </Row>
+                </Container>
             </>
             ) : (<div className='d-flex justify-content-center mt-5'><p>No projects yet</p></div>)}
         </>

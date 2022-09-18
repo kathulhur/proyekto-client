@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { FaExternalLinkSquareAlt } from 'react-icons/fa';
 import { useQuery } from '@apollo/client';
 import query from './query';
-
+import Table from 'react-bootstrap/Table';
 
 
 export default function ClientsTable() {
@@ -26,37 +26,32 @@ export default function ClientsTable() {
                 <a className='btn btn-primary mb-3'>Add Client</a>
             </Link>
             { data.clients?.length > 0 ? (
-                <div className="container">
-                    <table className="table table-hover mt-3">
-                        <thead>
-                            <tr>
-                                <td></td>
-                                <td>Name</td>
-                                <td>Email</td>
-                                <td>Phone</td>
-                                <td></td>
+                <Table responsive bordered hover striped>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        { data.clients.map(client => (
+                            <tr key={client.id}>
+                                <td className='text-center'>
+                                    <Link href={`/clients/${encodeURIComponent(client.id)}`}>
+                                        <a>
+                                            <FaExternalLinkSquareAlt/>
+                                        </a>
+                                    </Link>
+                                </td>
+                                <td>{ client.name }</td>
+                                <td>{ client.email }</td>
+                                <td>{ client.phone }</td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            { data.clients.map(client => (
-                                <tr key={client.id}>
-                                    <td>
-                                        <div className='d-flex'>
-                                            <Link href={`/clients/${encodeURIComponent(client.id)}`}>
-                                                <a>
-                                                    <FaExternalLinkSquareAlt/>
-                                                </a>
-                                            </Link>
-                                        </div>
-                                    </td>
-                                    <td>{ client.name }</td>
-                                    <td>{ client.email }</td>
-                                    <td>{ client.phone }</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+                        ))}
+                    </tbody>
+                </Table>
             ) : (<div className='d-flex justify-content-center mt-5'><p>No clients yet</p></div>)}
         </>
     )

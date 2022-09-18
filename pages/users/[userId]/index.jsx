@@ -67,7 +67,7 @@ export default function User() {
                     <FaShieldAlt className='icon'/> <b>TwoFactorAuthentication:</b> {data.user?.twoFactorAuthEnabled ? 'Enabled' : 'Disabled'}
                 </li>
                 <li className="list-group-item">
-                    <FaShieldAlt className='icon'/> <b>TwoFactorAuthentication QRCode Link:</b> <a href={data.user?.twoFactorAuthQrLink}>Click Here</a>
+                    <FaShieldAlt className='icon'/> <b>TwoFactorAuthentication QRCode Link:</b> <a href={data.user?.twoFactorAuthQrLink} target='_blank'>Click Here</a>
                 </li>
             </ul>
             <div className='d-flex justify-content-end mt-3'>

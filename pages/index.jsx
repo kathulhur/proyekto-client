@@ -1,5 +1,5 @@
 import React from 'react'
-import ProjectsTable from '../src/components/projects/Table'
+import ProjectsCard from '../src/components/projects/Card'
 import Header from '../src/components/Header';
 
 export default function Home() {
@@ -9,7 +9,7 @@ export default function Home() {
             <Header />
             <h1>Your Cool Projects</h1>
             <hr/>
-            <ProjectsTable/> 
+            <ProjectsCard/> 
         </div>
     )
 }

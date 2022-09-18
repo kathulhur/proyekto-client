@@ -48,13 +48,12 @@ function ProjectPage() {
                     <a className="btn btn-primary btn-sm w-25 d-inline ms-auto">Back</a>
                 </Link>
         
-                <h3>Project: { data.project.name }</h3>
+                <h3>{ data.project.name }</h3>
                 <h4>Client: {data.project.client.name}</h4>
                 <hr />
 
                 <p>{ data.project.description }</p>
 
-                <h5 className="mt-3">Project Status</h5>
                 <p className="lead">{ data.project.status }</p>
                 <div className='d-flex justify-content-end'>
                     <Link href={`/projects/${data.project.id}/update`}>

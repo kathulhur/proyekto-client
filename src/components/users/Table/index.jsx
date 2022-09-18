@@ -4,6 +4,7 @@ import { useQuery } from '@apollo/client';
 import Spinner from '../../Spinner';
 import Forbidden from '../../Forbidden';
 import { FaExternalLinkSquareAlt } from 'react-icons/fa';
+import Table from 'react-bootstrap/Table';
 
 export default function UsersTable() {
     const { loading, error, data } = useQuery(GET_USERS);
@@ -26,20 +27,19 @@ export default function UsersTable() {
                         Create User
                     </a>
                 </Link>
-                <table className="table table-hover mt-3">
+                <Table responsive hover bordered striped>
                     <thead>
                         <tr>
-                            <td></td>
-                            <td>ID</td>
-                            <td>Username</td>
-                            <td>Password</td>
-                            <td></td>
+                            <th></th>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>Password</th>
                         </tr>
                     </thead>
                     <tbody>
                         { data.users.map(user => (
                             <tr key={user.id}>
-                                <td>
+                                <td className='text-center'>
                                     <Link href={`/users/${user.id}`}>
                                         <a>
                                             <FaExternalLinkSquareAlt />
@@ -52,7 +52,7 @@ export default function UsersTable() {
                             </tr>
                         ))}
                     </tbody>
-                </table>
+                </Table>
                 </>
             ) : (
                 <div className='d-flex justify-content-center mt-5'>

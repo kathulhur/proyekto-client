@@ -1,5 +1,5 @@
 import Header from "../../src/components/Header";
-import ProjectsTable from '../../src/components/projects/Table'
+import ProjectsCard from '../../src/components/projects/Card'
 
 
 export default function ProjectsPage() {
@@ -8,7 +8,7 @@ export default function ProjectsPage() {
     return (
         <>
             <Header />
-            <ProjectsTable />
+            <ProjectsCard />
         </>
     )
 }
