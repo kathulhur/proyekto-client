@@ -29,7 +29,7 @@ const cache = new InMemoryCache({
 })
   
 const httpLink = createHttpLink({
-    uri: 'https://proyekto-client.vercel.app/graphql',
+    uri: 'https://proyekto-app.herokuapp.com/graphql',
     credentials: 'include',
 });
 
