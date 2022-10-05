@@ -5,6 +5,7 @@ import query from "./query";
 import { useState } from 'react'
 import { useQuery } from '@apollo/client'
 import Spinner from '../../Spinner'
+import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
 
 
 export default function CreateProjectForm() {
@@ -17,7 +18,7 @@ export default function CreateProjectForm() {
 
     const { loading, error, data } = useQuery(query, {
         onCompleted: (data) => {
-            setClientId(data.clients[0].id)
+            setClientId(data?.clients[0]?.id)
         }
     })
     
@@ -49,44 +50,86 @@ export default function CreateProjectForm() {
 
     return (
     <>
-        <form onSubmit={onSubmit}>
-            <div className="mb-3">
-                <label className="form-label">Name</label>
-                <input type="text" className="form-control" id="name" value={name} onChange={ (e) => setName(e.target.value)}/>
-            </div>
-            <div className="mb-3">
-                <label className="form-label">Description</label>
-                <textarea
-                    className='form-control'
-                    id='description'
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}>
-                    </textarea>
-            </div>
-            <div className="mb-3">
-                <label className="form-label">Status</label>
-                <select className="form-select" defaultValue={status} onChange={ (e) => setStatus(e.target.value)}>
-                    <option value="NEW">Not Started</option>
-                    <option value="PROGRESS">In Progress</option>
-                    <option value="COMPLETED">Completed</option>
-                </select>
-            </div>
-            { !loading && !error && (
-            <div className="mb-3">
+        <Box
+            component='form'
+            onSubmit={onSubmit}
+            autoComplete='off'
+            padding='2rem'
+            display='flex'
+            flexDirection='column'
+            alignItems='center'
+            sx={{
+                '& .MuiTextField-root': { m: 1, width: '50ch' },
+            }}
 
-            <label className="form-label">Client</label>
-            <select className="form-select" defaultValue={clientId} onChange={(e) => setClientId(e.target.value)}>
-                    {data.clients?.map(client => (
-                        <option key={client.id} value={client.id}>{client.name}</option>
-                        ))}
-            
-            </select>
-            </div>
-            )}
+        >
+            <Typography
+                variant='h3'
+                component='h2'
+                mb='4rem'
+            >
+                New Project
+            </Typography>
+            <TextField
+                required
+                id='name'
+                label='Project Name'
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+            />
+            <TextField
+                required
+                id="description"
+                label="Description"
+                onChange={(e) => setDescription(e.target.value)}
+                multiline
+                rows={4}
+            />
+            <Box 
+                display='flex'
+                justifyContent='flex-start'
+                columnGap={'2rem'}
+                marginY={'2rem'}
+            >
+                <FormControl>
+                    <InputLabel id='status-label'>Status</InputLabel>
+                    <Select
+                        id="status"
+                        value={status}
+                        label='status'
+                        labelId="status-label"
+                        onChange={(e) => setStatus(e.target.value)}
+                    >
+                        <MenuItem value={'NEW'}>New</MenuItem>
+                        <MenuItem value={'PROGRESS'}>In Progress</MenuItem>
+                        <MenuItem value={'COMPLETED'}>Completed</MenuItem>
+                    </Select>
+                </FormControl>
+                <FormControl>
+                    <InputLabel id='client-label'>Client</InputLabel>
+                    <Select
+                        id="client"
+                        value={clientId}
+                        label='status'
+                        labelId="status-label"
+                        onChange={(e) => setClientId(e.target.value)}
+                    >
+                        { !loading && !error && data?.clients?.map((client) => (
+                            <MenuItem key={client.id} value={client.id}>{client.name}</MenuItem>
+                        ))
+                        }
+                    </Select>
+                </FormControl>
+            </Box>
+            <Button
+                size='large'
+                variant='contained'
+                type='submit'
+            >
+                Submit
+            </Button>
 
-
-            <button type="submit"className="btn btn-secondary">Submit</button>
-        </form>
+        </Box>
     </>
     )
 }

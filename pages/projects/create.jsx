@@ -1,13 +1,20 @@
 import CreateProjectForm from '../../src/components/projects/Create'
-import Header from '../../src/components/Header'
-
+import Layout from '../../src/components/Layout'
 export default function CreateProjectPage() {
 
   return (
     <>
-      <Header />
       <h3>Create Project</h3>
-      <CreateProjectForm redirectPath="/users"/>
+      <CreateProjectForm redirectPath="/projects"/>
     </>
+  )
+}
+
+
+CreateProjectPage.getLayout = function getLayout(page) {
+  return (
+    <Layout>
+      {page}
+    </Layout>
   )
 }

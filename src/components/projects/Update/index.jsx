@@ -4,6 +4,7 @@ import query from "./query"
 import mutation from "./mutation"
 import { useQuery } from "@apollo/client"
 import { useRouter } from "next/router"
+import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material"
 
 export default function UpdateProjectForm() {
     const router = useRouter();
@@ -12,6 +13,7 @@ export default function UpdateProjectForm() {
     const [name, setName] = useState('')
     const [description, setDescription] = useState('')
     const [status, setStatus] = useState('');
+    const [clientId, setClientId] = useState('')
 
     const { loading, error, data } = useQuery(query, {
             skip: !projectId,
@@ -20,6 +22,7 @@ export default function UpdateProjectForm() {
                 setName(data.project.name)
                 setDescription(data.project.description)
                 setStatus(data.project.status)
+                setClientId(data.project.client.id)
             }
         }
     )
@@ -29,7 +32,8 @@ export default function UpdateProjectForm() {
             id: projectId,
             name,
             description,
-            status
+            status,
+            clientId
         },
     });
 
@@ -48,28 +52,86 @@ export default function UpdateProjectForm() {
     }
 
     return (
-        <div className='mt-5'>
-            <h3>Update Project Details</h3>
-            <form onSubmit={ onSubmit }>
-            <div className="mb-3">
-                <label className="form-label">Name</label>
-                <input type="text" className="form-control" id="name" value={name} onChange={ (e) => setName(e.target.value)}/>
-            </div>
-            <div className="mb-3">
-                <label className="form-label">Description</label>
-                <input type="text" className="form-control" id="description" value={description} onChange={ (e) => setDescription(e.target.value)}/>
-            </div>
-            <div className="mb-3">
-                <label className="form-label">Status</label>
-                <select className="form-select" aria-label="Default select example" value={status} onChange={ (e) => setStatus(e.target.value)}>
-                    <option value="NEW">Not Started</option>
-                    <option value="PROGRESS">In Progress</option>
-                    <option value="COMPLETED">Completed</option>
-                </select>
-            </div>
+        <Box
+            component='form'
+            onSubmit={onSubmit}
+            autoComplete='off'
+            padding='2rem'
+            display='flex'
+            flexDirection='column'
+            alignItems='center'
+            sx={{
+                '& .MuiTextField-root': { m: 1, width: '50ch' },
+            }}
 
-            <button type="submit" className="btn btn-primary">Submit</button>
-            </form>
-        </div>
+        >
+            <Typography
+                variant='h3'
+                component='h2'
+                mb='4rem'
+            >
+                New User
+            </Typography>
+            <TextField
+                required
+                id='name'
+                label='Project Name'
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+            />
+            <TextField
+                required
+                id="description"
+                label="Description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                multiline
+                rows={4}
+            />
+            <Box 
+                display='flex'
+                justifyContent='flex-start'
+                columnGap={'2rem'}
+                marginY={'2rem'}
+            >
+                <FormControl>
+                    <InputLabel id='status-label'>Status</InputLabel>
+                    <Select
+                        id="status"
+                        value={status}
+                        label='status'
+                        labelId="status-label"
+                        onChange={(e) => setStatus(e.target.value)}
+                    >
+                        <MenuItem value={'NEW'}>New</MenuItem>
+                        <MenuItem value={'PROGRESS'}>In Progress</MenuItem>
+                        <MenuItem value={'COMPLETED'}>Completed</MenuItem>
+                    </Select>
+                </FormControl>
+                <FormControl>
+                    <InputLabel id='client-label'>Client</InputLabel>
+                    <Select
+                        id="client"
+                        value={clientId}
+                        label='status'
+                        labelId="status-label"
+                        onChange={(e) => setClientId(e.target.value)}
+                    >
+                        { !loading && !error && data?.clients?.map((client) => (
+                            <MenuItem key={client.id} value={client.id}>{client.name}</MenuItem>
+                        ))
+                        }
+                    </Select>
+                </FormControl>
+            </Box>
+            <Button
+                size='large'
+                variant='contained'
+                type='submit'
+            >
+                Submit
+            </Button>
+
+        </Box>
     )
 }

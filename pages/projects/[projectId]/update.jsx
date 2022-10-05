@@ -1,13 +1,22 @@
-import Header from "../../../src/components/Header"
-import EditProjectForm from '../../../src/components/projects/Update'
+import Layout from '../../../src/components/Layout'
+import UpdateProjectForm from '../../../src/components/projects/Update'
 
-export default function EditClientPage() {
+export default function UpdateProjectPage() {
     
     return (
         <>
-            <Header/>
-            <EditProjectForm />
+            <h3>Update Project</h3>
+            <UpdateProjectForm />
         </>
     )
 
+}
+
+
+UpdateProjectPage.getLayout = function getLayout(page) {
+    return (
+        <Layout>
+            {page}
+        </Layout>
+    )
 }

@@ -3,11 +3,13 @@ import { useRouter } from 'next/router'
 import Header from '../../../src/components/Header'
 import Spinner from '../../../src/components/Spinner'
 import DeleteProjectModal from '../../../src/components/projects/Delete'
-import Link from 'next/link'
-
+import {default as NextLink} from 'next/link'
+import Layout from '../../../src/components/Layout'
+import { Avatar, Box, Button, Chip, Container, Divider, Link, Typography } from '@mui/material'
+import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded'
 
 const query = gql`
-    query Project($id: ID!) {
+    query ProjectPageQuery($id: ID!) {
         project(id: $id) {
             id
             name
@@ -40,31 +42,76 @@ function ProjectPage() {
 
 
     return (
-        <>
-            <Header />
+        <Container>
             { !loading && !error && data && (
-                <div className="mx-auto w-75 card p-5">
-                <Link href="/">
-                    <a className="btn btn-primary btn-sm w-25 d-inline ms-auto">Back</a>
-                </Link>
-        
-                <h3>{ data.project.name }</h3>
-                <h4>Client: {data.project.client.name}</h4>
-                <hr />
+                <>
+                <NextLink href="/projects" passHref>
+                    <Button
+                        startIcon={<ChevronLeftRoundedIcon/>}
+                    >
+                        Back
+                    </Button>
+                </NextLink>
+                <Box
+                    margin='2rem'
+                    padding='2rem'
+                    border='solid 1px #E1E1E1'
+                    borderRadius='16px'
+                >
+                    <Box
+                        display='flex'
+                        justifyContent='space-between'    
+                    >
+                        <Box>
+                            <Typography>
+                                {data?.project?.name || 'Placeholder Project Name'}
+                            </Typography>
+                            <Chip label={data?.project?.status || 'Placeholder Project Name'} color='success'/>
+                        </Box>
+                        <Box
+                            display='flex'
+                            flexDirection='row'
+                            alignItems='center'
+                            columnGap='1rem'
+                        >
+                            <Typography>
+                                {data?.project?.client.name || 'Placeholder Project Name'}
+                            </Typography>
+                            <Divider orientation='vertical' sx={{width: '1px'}}/>
+                            <Avatar/>
+                        </Box>
+                    </Box>
 
-                <p>{ data.project.description }</p>
+                    <Divider sx={{width: '100%', marginY: '1rem'}}/>
+                    <Typography>{ data.project.description }</Typography>
 
-                <p className="lead">{ data.project.status }</p>
-                <div className='d-flex justify-content-end'>
-                    <Link href={`/projects/${data.project.id}/update`}>
-                        <a className='btn btn-primary me-2'>Update</a>
-                    </Link>
-                    <DeleteProjectModal/>
-                </div>
-              </div>
+                    <Box
+                        marginTop='1rem'
+                        display='flex'
+                        justifyContent='flex-end'
+                        gap='1rem'
+                    >
+                        <NextLink href={`/projects/${data.project.id}/update`} passHref>
+                            <Button color='warning' variant='contained'>
+                                Update Project Details
+                            </Button>
+                        </NextLink>
+                        <DeleteProjectModal/>
+                    </Box>
+                </Box>
+                </>
             )}
-        </>
+        </Container>
     )
 }
+
+ProjectPage.getLayout = function getLayout(page) {
+    return (
+        <Layout>
+            {page}
+        </Layout>
+    )
+}
+
 
 export default ProjectPage

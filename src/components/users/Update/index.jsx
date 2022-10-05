@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { useQuery, useMutation } from "@apollo/client"
 import mutation from "./mutation"
 import query from "./query"
+import { Box, Button, Checkbox, FormControl, FormControlLabel, FormGroup, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material"
 
 export default function UpdateUserForm() {
     const router = useRouter()
@@ -45,33 +46,72 @@ export default function UpdateUserForm() {
     }
 
     return (
-        <div className='mt-5'>
-            <h3>Update User</h3>
-            <form onSubmit={ onSubmit }>
-            <div className="mb-3">
-                <label className="form-label">Username</label>
-                <input type="text" className="form-control" id="name" value={username} onChange={ (e) => setUsername(e.target.value)}/>
-            </div>
-            <div className="mb-3">
-                <label className="form-label">Password</label>
-                <input type="password" className="form-control" id="password" value={password} onChange={ (e) => setPassword(e.target.value)}/>
-            </div>
-            <div className="mb-3">
-                <label className="form-label">Status</label>
-                <select className="form-select" aria-label="Default select example" value={role} onChange={ (e) => setRole(e.target.value)}>
-                    <option value="USER">User</option>
-                    <option value="ADMIN">Admin</option>
-                </select>
-            </div>
-            <div className="form-check mb-5">
-                <input className="form-check-input" type="checkbox" checked={ twoFactorAuthEnabled } onChange={ (e) => setTwoFactorAuthEnabled(!twoFactorAuthEnabled)} id="is-two-factor-auth-enabled"/>
-                <label className="form-check-label" htmlFor="is-two-factor-auth-enabled">
-                    Enable Two Factor Authentication
-                </label>
-            </div>
+        <Box
+            component='form'
+            onSubmit={onSubmit}
+            autoComplete='off'
+            padding='2rem'
+            display='flex'
+            flexDirection='column'
+            alignItems='center'
+            sx={{
+                '& .MuiTextField-root': { m: 1, width: '50ch' },
+            }}
 
-            <button type="submit" className="btn btn-primary">Submit</button>
-            </form>
-        </div>
+        >
+            <Typography
+                variant='h3'
+                component='h2'
+                mb='4rem'
+            >
+                Update User
+            </Typography>
+            <TextField
+                required
+                id='username'
+                label='Username'
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+            />
+            <TextField
+                required
+                id='password'
+                label='Password'
+                type='password'
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+            />
+            <FormGroup
+                sx={{
+                    rowGap: '2rem',
+                    marginY: '1rem'
+                }}
+            >
+                <FormControl>
+                    <InputLabel id='role-label'>Role</InputLabel>
+                    <Select
+                        labelId='role-label'
+                        value={role}
+                        label='Role'
+                        onChange={(e) => setRole(e.target.value)}
+                    >
+                        <MenuItem value='USER'>User</MenuItem>
+                        <MenuItem value='ADMIN'>Admin</MenuItem>
+                    </Select>
+                </FormControl>
+                <FormControlLabel
+                    control={<Checkbox />}
+                    label='Two Factor Auth Enabled'
+                />
+            </FormGroup>
+            <Button
+                size='large'
+                variant='contained'
+                type='submit'
+            >
+                Submit
+            </Button>
+
+        </Box>
     )
 }

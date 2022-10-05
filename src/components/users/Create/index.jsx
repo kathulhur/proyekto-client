@@ -1,4 +1,5 @@
 import { useMutation } from "@apollo/client"
+import { Box, Button, TextField, Typography } from "@mui/material";
 import { useRouter } from "next/router"
 import { useState } from "react";
 import mutation from "./mutation";
@@ -32,22 +33,49 @@ export default function CreateUserForm({ redirectPath }) {
     }
 
     return (
-        <>
-        <div className='mt-5'>
-            <form onSubmit={ onSubmit }>
-            { error && <div className="alert alert-danger">{ error.message }</div> }
-            <div className="mb-3">
-                <label className="form-label">Username</label>
-                <input type="text" className="form-control" id="username" value={username} onChange={ (e) => setUsername(e.target.value)}/>
-            </div>
-            <div className="mb-3">
-                <label className="form-label">Password</label>
-                <input type="password" className="form-control" id="password" value={password} onChange={ (e) => setPassword(e.target.value)}/>
-            </div>
+        <Box
+            component='form'
+            onSubmit={onSubmit}
+            autoComplete='off'
+            padding='2rem'
+            display='flex'
+            flexDirection='column'
+            alignItems='center'
+            sx={{
+                '& .MuiTextField-root': { m: 1, width: '50ch' },
+            }}
 
-            <button type="submit" className="btn btn-primary">Submit</button>
-            </form>
-        </div>
-        </>
+        >
+            <Typography
+                variant='h3'
+                component='h2'
+                mb='4rem'
+            >
+                New User
+            </Typography>
+            <TextField
+                required
+                id='name'
+                label='Username'
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+            />
+            <TextField
+                required
+                id='password'
+                type='password'
+                label='Password'
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+            />
+            <Button
+                size='large'
+                variant='contained'
+                type='submit'
+            >
+                Submit
+            </Button>
+
+        </Box>    
     )
 }

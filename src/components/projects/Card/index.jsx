@@ -1,50 +1,73 @@
-import Link from 'next/link'
-import query from './query'
-import Spinner from '../../Spinner';
-import Forbidden from '../../Forbidden';
-import { useQuery } from "@apollo/client";
-import Card from 'react-bootstrap/Card';
-import { Col, Container, Row } from 'react-bootstrap';
-
-
-export default function Projects() {
-    const { loading, error, data } = useQuery(query);
-
-    if (loading) return <Spinner />;
-    if (error) return (
-        <>
-            { error.graphQLErrors[0]?.extensions.code === "FORBIDDEN" ? 
-                <Forbidden/> : // if the error code is forbidden
-                <p>Something Went Wrong</p> 
-            }
-        </>
-    )
+import Typography from "@mui/material/Typography"
+import Box from "@mui/material/Box"
+import Paper from "@mui/material/Paper"
+import Divider from "@mui/material/Divider"
+import { Avatar, Chip, Link } from "@mui/material"
+import { default as NextLink } from 'next/link'
+export default function ProjectCard({ project }) {
     return (
         <>
-        <Link href='/projects/create'>
-            <a className='btn btn-primary mb-3'>Create Project</a>
-        </Link>
-            { data.projects?.length > 0 ? (
-            <>
-                <Container className='mt-3 p-0' fluid>
-                    <Row xs={{cols: 2}} xl={{cols: 3}} >
-                    { data.projects.map( (project) => (
-                        <Col key={project.id} className='mb-4'>
-                            <Card key={project.id}>
-                                <Card.Body>
-                                    <Card.Title>{project.name}</Card.Title>
-                                    <Card.Text>{project.description}</Card.Text>
-                                    <Link href={`/projects/${project.id}`}>
-                                        <a className='btn btn-primary'>View Project</a>
-                                    </Link>
-                                </Card.Body>
-                            </Card>
-                        </Col>
-                    ))}
-                    </Row>
-                </Container>
-            </>
-            ) : (<div className='d-flex justify-content-center mt-5'><p>No projects yet</p></div>)}
+            <Paper
+                elevation={1}
+                sx={{ 
+                    padding: '2rem', 
+                    backgroundColor: 'rgb(245, 245, 245)', 
+                    marginY: '2rem' 
+                }}
+            >
+                <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} marginBottom={'1rem'}>
+                    <NextLink
+                        href={`projects/${project?.id}`}
+                        passHref
+                    >
+                        <Link
+                            underline='none'
+                        >
+                            <Typography
+                                variant={'h4'}
+                                component={'h2'}
+                                >
+                                { project?.name || 'Google Developer Website' }
+                                <Chip
+                                    label={project?.status}
+                                    color='success'
+                                    variant='outlined'
+                                    style={{marginLeft: '1rem'}}
+                                    
+                                    />
+                            </Typography>
+                        </Link>
+                    </NextLink>
+                    
+                    <Box display={'flex'} alignItems={'center'}>
+                        <Box 
+                            display={'flex'} 
+                            flexDirection={'column'} 
+                            alignItems={'end'}
+                            marginRight={'1rem'}
+                        >
+                            <Typography variant="subtitle1">
+                                {project?.client?.name || 'Jared Ken'}
+                            </Typography>
+                            <Typography variant="body2">
+                                {project?.client?.address || 'Sampaloc, Manila'}
+                            </Typography>
+                        </Box>
+                        <Divider flexItem orientation="vertical"/>
+                        <Box marginLeft={'1rem'}>
+                            <Avatar alt={'Picture of the client'}>C</Avatar>
+                        </Box>
+                    </Box>
+                </Box>
+                <Divider/>
+                <Typography 
+                    marginTop={'1rem'}
+                    variant={'body1'}
+                    component={'p'}  
+                >
+                    {project?.description || 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus a amet praesentium repudiandae, nostrum asperiores mollitia nisi ex quasi rerum culpa similique aspernatur rem molestias, eligendi doloribus? Eaque, fugiat dignissimos?'}
+                </Typography>
+            </Paper>
         </>
     )
 }

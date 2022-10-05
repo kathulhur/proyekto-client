@@ -1,11 +1,18 @@
 import CreateClientForm from '../../src/components/clients/Create'
-import Header from "../../src/components/Header";
+import Layout from '../../src/components/Layout'
 
 export default function CreateClientPage() {
     return (
     <>
-        <Header />
         <CreateClientForm/>
     </>
+    )
+}
+
+CreateClientPage.getLayout = function getLayout(page) {
+    return (
+    <Layout>
+        {page}
+    </Layout>
     )
 }

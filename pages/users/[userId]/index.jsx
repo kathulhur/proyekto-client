@@ -1,10 +1,14 @@
-import Link from 'next/link'
 import Spinner from '../../../src/components/Spinner';
 import Header from "../../../src/components/Header";
 import { useQuery, gql } from "@apollo/client";
 import { useRouter } from 'next/router'
-import { FaCode, FaLock, FaShieldAlt, FaUserCircle, FaUsers } from 'react-icons/fa';
 import DeleteUserModal from '../../../src/components/users/Delete';
+import { Avatar, Button, Card, Link, Paper, Typography } from '@mui/material';
+import Layout from '../../../src/components/Layout';
+import { Container } from 'react-bootstrap';
+import { Box } from '@mui/system';
+import  NextLink from 'next/link'
+import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded'
 
 const query = gql`
     query UserPageQuery($id: ID!) {
@@ -20,7 +24,7 @@ const query = gql`
     }
 `
 
-export default function User() {
+export default function UserPage() {
     const router = useRouter()
     const userId = router.query?.userId
 
@@ -42,42 +46,60 @@ export default function User() {
 
 
   return (
-    <>
-        <Header />
-        { !loading && !error && data && (
-        <div className="mx-auto w-75 card p-5">
-            <Link href="/">
-                <a className="btn btn-primary btn-sm w-25 d-inline ms-auto">Back</a>
-            </Link>
-            <h5 className="mt-5">User Information</h5>
-            <ul className="list-group">
-                <li className="list-group-item">
-                    <FaUserCircle className='icon'/> <b>Username:</b> {data.user?.username}
-                </li>
-                <li className="list-group-item">
-                    <FaLock className='icon'/> <b>Password</b>: {data.user?.password}
-                </li>
-                <li className="list-group-item">
-                    <FaCode className='icon'/> <b>secretCode:</b> {data.user?.secretCode}
-                </li>
-                <li className="list-group-item">
-                    <FaUsers className='icon'/> <b>Role:</b> {data.user?.role}
-                </li>
-                <li className="list-group-item">
-                    <FaShieldAlt className='icon'/> <b>TwoFactorAuthentication:</b> {data.user?.twoFactorAuthEnabled ? 'Enabled' : 'Disabled'}
-                </li>
-                <li className="list-group-item">
-                    <FaShieldAlt className='icon'/> <b>TwoFactorAuthentication QRCode Link:</b> <a href={data.user?.twoFactorAuthQrLink} target='_blank'>Click Here</a>
-                </li>
-            </ul>
-            <div className='d-flex justify-content-end mt-3'>
-                <Link href={`/users/${data.user?.id}/update`}>
-                    <a className="btn btn-primary me-3">Update</a>
-                </Link>
-                <DeleteUserModal/>
-            </div>
-        </div>
-        )}
-    </>
+    <Container>
+        <NextLink href="/users" passHref>
+                <Button
+                    startIcon={<ChevronLeftRoundedIcon/>}
+                >
+                    Back
+                </Button>
+            </NextLink>
+        <Box display={'flex'} flexDirection={'column'} alignItems={'center'}>
+            <Typography paddingBottom={'2rem'} textAlign='center' fontWeight='bold' variant='h5' component='h2'>
+                My Profile
+            </Typography>
+            <Paper elevation={3} sx={{ maxWidth: '900px'}}>
+                <Box display='flex' flexDirection='column' padding={'2rem'} alignItems='center' minWidth={'600px'}>
+                    <Avatar sx={{ width: '128px', height: '128px'}}/>
+                    <Typography marginTop={'2rem'} variant='h3' fontWeight={'bold'}>
+                        {data?.user?.username}
+                    </Typography>
+                    <Typography variant='subtitle2'>
+                        {data?.user?.role}
+                    </Typography>
+                    <br/>
+                    <br/>
+                    <Typography marginBottom={'2rem'} variant='subtitle2'>
+                        Two Factor Authentication Enabled: {String(data?.user?.twoFactorAuthEnabled)}
+                    </Typography>
+                    <Typography marginBottom={'2rem'} variant='subtitle2'>
+                        Two Factor Authentication QR Link:
+                        <Link href={String(data?.user?.twoFactorAuthQrLink)} target={'_blank'}>
+                            Click Here
+                        </Link>
+                    </Typography>
+                    <NextLink
+                        href={`/users/${data?.user?.id}/update`}
+                        passHref
+                    >
+                        <Button variant='outlined'>
+                            Update Profile
+                        </Button>
+                    </NextLink>
+                </Box>
+
+            </Paper>
+        </Box>
+    </Container>
   )
 }
+
+UserPage.getLayout = function getLayout(page) {
+    return (
+        <Layout>
+            {page}
+        </Layout>
+    )
+}
+
+

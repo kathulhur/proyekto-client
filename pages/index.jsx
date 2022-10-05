@@ -1,15 +1,28 @@
 import React from 'react'
-import ProjectsCard from '../src/components/projects/Card'
-import Header from '../src/components/Header';
-
+import Layout from '../src/components/Layout'
+import Box from '@mui/material/Box'
+import ConstructionRoundedIcon from '@mui/icons-material/ConstructionRounded'
 export default function Home() {
 
     return (
-        <div className="container">
-            <Header />
-            <h1>Your Cool Projects</h1>
-            <hr/>
-            <ProjectsCard/> 
-        </div>
+        <Box
+            display='flex'
+            flexDirection='column'
+            justifyContent='center'
+            alignItems='center'
+            marginTop='4rem'
+        >
+            <ConstructionRoundedIcon fontSize='large'/>
+            <h2>This page is under development</h2>
+        </Box>
+    )
+}
+
+
+Home.getLayout = function getLayout(page) {
+    return (
+        <Layout>
+            {page}
+        </Layout>
     )
 }

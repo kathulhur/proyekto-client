@@ -1,14 +1,13 @@
 import { gql } from '@apollo/client'
 
-const GET_USERS = gql`
-  query getUsers{
+export default gql`
+  query UsersTableFindManyQuery{
     users{
         id
         username
-        password
+        role
+        twoFactorAuthEnabled
+        twoFactorAuthQrLink
     }
   }
 `;
-
-
-export { GET_USERS };

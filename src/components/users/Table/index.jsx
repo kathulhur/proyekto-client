@@ -1,15 +1,37 @@
-import Link from 'next/link';
-import { GET_USERS } from './query';
-import { useQuery } from '@apollo/client';
 import Spinner from '../../Spinner';
 import Forbidden from '../../Forbidden';
 import { FaExternalLinkSquareAlt } from 'react-icons/fa';
-import Table from 'react-bootstrap/Table';
+import { useQuery } from '@apollo/client';
+import query from './query';
+import { Button, LinearProgress, Paper, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material';
+import Table from '@mui/material/Table'
+import { useState } from 'react'
+import OpenInNewRounded from '@mui/icons-material/OpenInNewRounded';
+import { default as NextLink} from 'next/link'
+
+const columns = [
+    { id: 'username', label: 'Username', minWidth: 100 },
+    { id: 'role', label: 'Role', minWidth: 100 },
+    { id: 'twoFactorAuthEnabled', label: 'Two Factor Auth Enabled', minWidth: 100 },
+    { id: 'twoFactorAuthQrLink', label: 'Two Factor Auth Qr Link', minWidth: 100 }
+]
 
 export default function UsersTable() {
-    const { loading, error, data } = useQuery(GET_USERS);
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
 
-    if (loading) return <Spinner />;
+    const { loading, error, data } = useQuery(query);
+
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+    
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(+event.target.value);
+        setPage(0);
+    };
+
+    if (loading) return <LinearProgress/>;
     if (error) return (
         <>
             { error.graphQLErrors[0]?.extensions.code === "FORBIDDEN" ? 
@@ -19,46 +41,63 @@ export default function UsersTable() {
         </>
     )
     return (
-        <>
-            { data.users?.length > 0 ? (
-                <>
-                <Link href="/users/create">
-                    <a className='btn btn-primary mb-3'>
-                        Create User
-                    </a>
-                </Link>
-                <Table responsive hover bordered striped>
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>ID</th>
-                            <th>Username</th>
-                            <th>Password</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        { data.users.map(user => (
-                            <tr key={user.id}>
-                                <td className='text-center'>
-                                    <Link href={`/users/${user.id}`}>
-                                        <a>
-                                            <FaExternalLinkSquareAlt />
-                                        </a>
-                                    </Link>
-                                </td>
-                                <td>{ user.id }</td>
-                                <td>{ user.username }</td>
-                                <td>{ user.password }</td>
-                            </tr>
+        <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+            <TableContainer sx={{ maxHeight: 440 }}>
+            <Table stickyHeader aria-label="sticky table">
+                <TableHead>
+                    <TableRow>
+                        <TableCell />
+                        {columns.map((column) => (
+                        <TableCell
+                            key={column.id}
+                            style={{ minWidth: column.minWidth }}
+                        >
+                            {column.label}
+                        </TableCell>
                         ))}
-                    </tbody>
-                </Table>
-                </>
-            ) : (
-                <div className='d-flex justify-content-center mt-5'>
-                    <p>No projects yet</p>
-                </div>
-            )}
-        </>
-    )
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {data.users
+                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        .map((user) => {
+                        return (
+                            <TableRow hover role="checkbox" tabIndex={-1} key={user.id}>
+                                <TableCell>
+                                    <NextLink
+                                        href={`users/${user.id}`}
+                                        passHref
+                                    >
+                                        <Button>
+                                            <OpenInNewRounded/>
+                                        </Button>
+                                    </NextLink>
+                                </TableCell>
+                                {columns.map((column) => {
+                                    const value = user[column.id];
+                                    
+                                    return (
+                                    <TableCell key={column.id}>
+                                        {String(value)}
+                                    </TableCell>
+                                    );
+                                })}
+                            </TableRow>
+                        );
+                    })}
+                </TableBody>
+            </Table>
+            </TableContainer>
+            <TablePagination
+                rowsPerPageOptions={[10, 25, 100]}
+                component="div"
+                count={data.users.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+        </Paper>
+    );
+
 }

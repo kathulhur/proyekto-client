@@ -2,8 +2,12 @@
 import { ApolloProvider, ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import Head from 'next/head'
-import Script from 'next/script'
-import '../styles.css'
+// import '../styles.css'
+import Layout from '../src/components/Layout';
+// import '@fontsource/roboto/300.css';
+// import '@fontsource/roboto/400.css';
+// import '@fontsource/roboto/500.css';
+// import '@fontsource/roboto/700.css';
 
 const cache = new InMemoryCache({
     typePolicies: {
@@ -25,7 +29,7 @@ const cache = new InMemoryCache({
 })
   
 const httpLink = createHttpLink({
-    uri: 'https://proyekto-app.herokuapp.com/graphql',
+    uri: 'http://localhost:5000/graphql',
     credentials: 'include',
 });
 
@@ -47,6 +51,8 @@ const client = new ApolloClient({
 })
 
 function MyApp({ Component, pageProps }) {
+    const getLayout = Component.getLayout || ((page) => page)
+
     return (
         <>
             <Head>
@@ -60,29 +66,17 @@ function MyApp({ Component, pageProps }) {
                 
                 
             </Head>
-            <Script 
+            {/* <Script 
                 src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossOrigin="anonymous"
                 
-            />
-            <div className='container'>
+            /> */}
+            <div className='container-fluid'>
                 <ApolloProvider client={client}>
-                    <Component {...pageProps} />
+                    { getLayout(<Component {...pageProps}/>)}
                 </ApolloProvider>
             </div>
         </>
     )
 }
   
-  // Only uncomment this method if you have blocking data requirements for
-  // every single page in your application. This disables the ability to
-  // perform automatic static optimization, causing every page in your app to
-  // be server-side rendered.
-  //
-  // MyApp.getInitialProps = async (appContext) => {
-  //   // calls page's `getInitialProps` and fills `appProps.pageProps`
-  //   const appProps = await App.getInitialProps(appContext);
-  //
-  //   return { ...appProps }
-  // }
-  
-  export default MyApp
+export default MyApp

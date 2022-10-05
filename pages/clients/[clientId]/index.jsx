@@ -1,12 +1,11 @@
-import { FaEnvelope, FaPhone, FaIdBadge } from 'react-icons/fa'
 import { useQuery, useMutation, gql } from '@apollo/client'
 import { useRouter } from 'next/router'
-import Forbidden from '../../../src/components/Forbidden'
 import Spinner from '../../../src/components/Spinner'
-import Header from '../../../src/components/Header'
-import Link from 'next/link'
+import {default as NextLink} from 'next/link'
 import DeleteClientModal from '../../../src/components/clients/Delete'
-
+import Layout from '../../../src/components/Layout'
+import { Avatar, Box, Button, Container, Paper, Typography } from '@mui/material'
+import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded'
 
 const query = gql`
     query ClientPageQuery($id: ID!) {
@@ -42,30 +41,73 @@ export default function ClientPage() {
     )
     
     return (
-        <>
-            <Header />
-            { !loading && !error && data && (
-            <>
-                <h5 className="mt-5">Client Information</h5>
-                <ul className="list-group">
-                    <li className="list-group-item">
-                        <FaIdBadge className='icon'/> {data?.client?.name}
-                    </li>
-                    <li className="list-group-item">
-                        <FaEnvelope className='icon'/> {data?.client?.email}
-                    </li>
-                    <li className="list-group-item">
-                        <FaPhone className='icon'/> {data?.client?.phone}
-                    </li>
-                </ul>
-                <div className='d-flex align-items-center justify-content-end mt-3'>
-                    <Link href={`/clients/${clientId}/update`}>
-                        <a className='btn btn-primary me-3'>Update</a>
-                    </Link>
-                    <DeleteClientModal />
-                </div>
-            </>
-            )}
-        </>
+        <Container >
+            <NextLink href="/projects" passHref>
+                <Button
+                    startIcon={<ChevronLeftRoundedIcon/>}
+                >
+                    Back
+                </Button>
+            </NextLink>
+            <Typography 
+                paddingBottom='2rem' 
+                textAlign='center' 
+                fontWeight='bold' 
+                variant='h5' 
+                component='h2'
+            >
+                My Profile
+            </Typography>
+            <Box 
+                display='flex' 
+                flexDirection='column' 
+                padding='2rem' 
+                alignItems='center' 
+                minWidth={'600px'}
+                border='solid 1px #E1E1E1'
+                borderRadius='16px'
+            >
+                <Avatar sx={{ width: '128px', height: '128px'}}/>
+                <Typography marginTop={'2rem'} variant='h3' fontWeight={'bold'}>
+                    {data?.client?.name}
+                </Typography>
+                <Typography 
+                    variant='subtitle2'
+                    component='p'
+                >
+                    {data?.client?.phone}
+                </Typography>
+                <Typography 
+                    variant='subtitle2'
+                    component='p'
+                    marginBottom='2rem'
+                >
+                    {data?.client?.email}
+                </Typography>
+
+                <Box
+                    marginTop='1rem'
+                    display='flex'
+                    justifyContent='flex-end'
+                    gap='1rem'
+                >
+                    <NextLink href={`/clients/${data?.client?.id}/update`} passHref>
+                        <Button color='warning' variant='contained'>
+                            Update Client Details
+                        </Button>
+                    </NextLink>
+                    <DeleteClientModal/>
+                </Box>
+            </Box>
+        </Container>
+    )
+}
+
+
+ClientPage.getLayout = function getLayout(page) {
+    return (
+        <Layout>
+            {page}
+        </Layout>
     )
 }

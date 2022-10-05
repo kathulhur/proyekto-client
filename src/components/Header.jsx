@@ -62,7 +62,7 @@ export default function Header() {
                                 {data.user.username}
                             </a>
                         </Link>
-                        <Link href="/login">
+                        <Link href="/signin">
                             <a className='border rounded px-4 me-3' onClick={ () => { localStorage.clear(); client.clearStore(); } }>
                                 Logout
                             </a>
@@ -70,8 +70,8 @@ export default function Header() {
                     </>
                 ) : (
                     <>
-                        <Link href="/login">
-                            <a className="me-5">Login</a>
+                        <Link href="/signin">
+                            <a className="me-5">Sign In</a>
                         </Link>
                         <Link href="/signup" className="">
                             <a>Sign Up</a>

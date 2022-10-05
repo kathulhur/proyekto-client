@@ -1,11 +1,18 @@
 import UpdateUserForm from '../../../src/components/users/Update'
-import Header from "../../../src/components/Header"
-
-export default function EditUserPage() {
+import Layout from '../../../src/components/Layout'
+export default function UpdateUserPage() {
     return (
         <>
-            <Header/>
             <UpdateUserForm />
         </>
+    )
+}
+
+
+UpdateUserPage.getLayout = function getLayout(page) {
+    return (
+        <Layout>
+            {page}
+        </Layout>
     )
 }

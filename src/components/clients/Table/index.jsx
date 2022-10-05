@@ -1,16 +1,33 @@
-import Spinner from '../../Spinner';
 import Forbidden from '../../Forbidden';
-import Link from 'next/link'
-import { FaExternalLinkSquareAlt } from 'react-icons/fa';
 import { useQuery } from '@apollo/client';
 import query from './query';
-import Table from 'react-bootstrap/Table';
-
+import { Button, LinearProgress, Paper, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material';
+import Table from '@mui/material/Table'
+import { useState } from 'react'
+import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded';
+import {default as NextLink} from 'next/link'
+const columns = [
+    { id: 'name', label: 'Name', minWidth: 100 },
+    { id: 'phone', label: 'Phone', minWidth: 100 },
+    { id: 'email', label: 'Email', minWidth: 100 }
+]
 
 export default function ClientsTable() {
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+
     const { loading, error, data } = useQuery(query);
 
-    if (loading) return <Spinner />;
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+    
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(+event.target.value);
+        setPage(0);
+    };
+
+    if (loading) return <LinearProgress/>;
     if (error) return (
         <>
             { error.graphQLErrors[0]?.extensions.code === "FORBIDDEN" ? 
@@ -21,38 +38,62 @@ export default function ClientsTable() {
     )
     
     return (
-        <>
-            <Link href='/clients/create'>
-                <a className='btn btn-primary mb-3'>Add Client</a>
-            </Link>
-            { data.clients?.length > 0 ? (
-                <Table responsive bordered hover striped>
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Phone</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        { data.clients.map(client => (
-                            <tr key={client.id}>
-                                <td className='text-center'>
-                                    <Link href={`/clients/${encodeURIComponent(client.id)}`}>
-                                        <a>
-                                            <FaExternalLinkSquareAlt/>
-                                        </a>
-                                    </Link>
-                                </td>
-                                <td>{ client.name }</td>
-                                <td>{ client.email }</td>
-                                <td>{ client.phone }</td>
-                            </tr>
+        <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+            <TableContainer sx={{ maxHeight: 440 }}>
+            <Table stickyHeader aria-label="sticky table">
+                <TableHead>
+                    <TableRow>
+                        <TableCell />
+                        {columns.map((column) => (
+                        <TableCell
+                            key={column.id}
+                            style={{ minWidth: column.minWidth }}
+                        >
+                            {column.label}
+                        </TableCell>
                         ))}
-                    </tbody>
-                </Table>
-            ) : (<div className='d-flex justify-content-center mt-5'><p>No clients yet</p></div>)}
-        </>
-    )
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {data.clients
+                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        .map((client) => {
+                        return (
+                            <TableRow hover role="checkbox" tabIndex={-1} key={client.id}>
+                                <TableCell>
+                                    <NextLink
+                                        href={`/clients/${client.id}`}
+                                        passHref
+                                    >
+                                        <Button>
+                                            <OpenInNewRoundedIcon/>
+                                        </Button>
+                                    </NextLink>
+                                </TableCell>
+                                {columns.map((column) => {
+                                    const value = client[column.id];
+                                    return (
+                                    <TableCell key={column.id}>
+                                        {value}
+                                    </TableCell>
+                                    );
+                                })}
+                            </TableRow>
+                        );
+                    })}
+                </TableBody>
+            </Table>
+            </TableContainer>
+            <TablePagination
+                rowsPerPageOptions={[10, 25, 100]}
+                component="div"
+                count={data.clients.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+        </Paper>
+    );
+
 }
